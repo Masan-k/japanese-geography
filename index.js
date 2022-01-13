@@ -42,102 +42,102 @@ function updateSelectScore(){
 
   for(let i in record.dataIndex){
     if(record.dataIndex[i].toString() === selectTarget){
-      lblScore.innerText = record.score[i];
-      lblTime.innerText = record.sec[i];
-      lblSelectDataRank.innerText = record.rank[i];
-      lblSelectDataRank.style.color = getRankColor(record.rank[i]);
+      elblScore.innerText = record.score[i];
+      elblTime.innerText = record.sec[i];
+      elblSelectDataRank.innerText = record.rank[i];
+      elblSelectDataRank.style.color = getRankColor(record.rank[i]);
 
       return 0;
     }
   }
-  lblScore.innerText = '-';
-  lblTime.innerText = '-';
-  lblSelectDataRank.innerText = '-';
-  lblSelectDataRank.style.color = '#7A756D';
+  elblScore.innerText = '-';
+  elblTime.innerText = '-';
+  elblSelectDataRank.innerText = '-';
+  elblSelectDataRank.style.color = '#7A756D';
 }
 
 function changeModeColor(){
   if(rdoEasy.checked){
-     lblSelectDataMode.innerText = "EASY"
-     lblEasy.style.background = "#FFF";
-     lblEasy.style.color  = "#000";
+     elblSelectDataMode.innerText = "EASY"
+     elblEasy.style.background = "#FFF";
+     elblEasy.style.color  = "#000";
   }else{
-     lblEasy.style.background = "#000";
-     lblEasy.style.color = "#FFF";
+     elblEasy.style.background = "#000";
+     elblEasy.style.color = "#FFF";
   }
   if(rdoNormal.checked){
-     lblSelectDataMode.innerText = "NORMAL"
-     lblNormal.style.background = "#FFF";
-     lblNormal.style.color  = "#000";
+     elblSelectDataMode.innerText = "NORMAL"
+     elblNormal.style.background = "#FFF";
+     elblNormal.style.color  = "#000";
   }else{
-     lblNormal.style.background = "#000";
-     lblNormal.style.color = "#FFF";
+     elblNormal.style.background = "#000";
+     elblNormal.style.color = "#FFF";
   }
   if(rdoHard.checked){
-     lblSelectDataMode.innerText = "HARD"
-     lblHard.style.background = "#FFF";
-     lblHard.style.color  = "#000";
+     elblSelectDataMode.innerText = "HARD"
+     elblHard.style.background = "#FFF";
+     elblHard.style.color  = "#000";
   }else{
-     lblHard.style.background = "#000";
-     lblHard.style.color = "#FFF";
+     elblHard.style.background = "#000";
+     elblHard.style.color = "#FFF";
   }
 }
 function changeTargetColor(){
   if(rdoTohoku.checked){
-     lblSelectDataTrg.innerText = "Tohoku"
-     lblTohoku.style.background = "#FFF";
-     lblTohoku.style.color  = "#000";
+     elblSelectDataTrg.innerText = "Tohoku"
+     elblTohoku.style.background = "#FFF";
+     elblTohoku.style.color  = "#000";
   }else{
-     lblTohoku.style.background = "#000";
-     lblTohoku.style.color = "#FFF";
+     elblTohoku.style.background = "#000";
+     elblTohoku.style.color = "#FFF";
   }
   if(rdoKanto.checked){
-     lblSelectDataTrg.innerText = "Kanto"
-     lblKanto.style.background = "#FFF";
-     lblKanto.style.color  = "#000";
+     elblSelectDataTrg.innerText = "Kanto"
+     elblKanto.style.background = "#FFF";
+     elblKanto.style.color  = "#000";
   }else{
-     lblKanto.style.background = "#000";
-     lblKanto.style.color = "#FFF";
+     elblKanto.style.background = "#000";
+     elblKanto.style.color = "#FFF";
   }
   if(rdoChubu.checked){
-     lblSelectDataTrg.innerText = "Chubu"
-     lblChubu.style.background = "#FFF";
-     lblChubu.style.color  = "#000";
+     elblSelectDataTrg.innerText = "Chubu"
+     elblChubu.style.background = "#FFF";
+     elblChubu.style.color  = "#000";
   }else{
-     lblChubu.style.background = "#000";
-     lblChubu.style.color = "#FFF";
+     elblChubu.style.background = "#000";
+     elblChubu.style.color = "#FFF";
   }
   if(rdoKinki.checked){
-     lblSelectDataTrg.innerText = "Kinki"
-     lblKinki.style.background = "#FFF";
-     lblKinki.style.color  = "#000";
+     elblSelectDataTrg.innerText = "Kinki"
+     elblKinki.style.background = "#FFF";
+     elblKinki.style.color  = "#000";
   }else{
-     lblKinki.style.background = "#000";
-     lblKinki.style.color = "#FFF";
+     elblKinki.style.background = "#000";
+     elblKinki.style.color = "#FFF";
   }
   if(rdoShikoku.checked){
-     lblSelectDataTrg.innerText = "Shikoku"
-     lblShikoku.style.background = "#FFF";
-     lblShikoku.style.color  = "#000";
+     elblSelectDataTrg.innerText = "Shikoku"
+     elblShikoku.style.background = "#FFF";
+     elblShikoku.style.color  = "#000";
   }else{
-     lblShikoku.style.background = "#000";
-     lblShikoku.style.color = "#FFF";
+     elblShikoku.style.background = "#000";
+     elblShikoku.style.color = "#FFF";
   }
   if(rdoKyushu.checked){
-     lblSelectDataTrg.innerText = "Kyushu"
-     lblKyushu.style.background = "#FFF";
-     lblKyushu.style.color  = "#000";
+     elblSelectDataTrg.innerText = "Kyushu"
+     elblKyushu.style.background = "#FFF";
+     elblKyushu.style.color  = "#000";
   }else{
-     lblKyushu.style.background = "#000";
-     lblKyushu.style.color = "#FFF";
+     elblKyushu.style.background = "#000";
+     elblKyushu.style.color = "#FFF";
   }
   if(rdoAll.checked){
-     lblSelectDataTrg.innerText = "All"
-     lblAll.style.background = "#FFF";
-     lblAll.style.color  = "#000";
+     elblSelectDataTrg.innerText = "All"
+     elblAll.style.background = "#FFF";
+     elblAll.style.color  = "#000";
   }else{
-     lblAll.style.background = "#000";
-     lblAll.style.color = "#FFF";
+     elblAll.style.background = "#000";
+     elblAll.style.color = "#FFF";
   }
 }
 function getSelectTarget(){
@@ -254,56 +254,56 @@ function getRankColor(rank){
 function drawHiScore(){
     'use strict';
 
-    lblTohokuRank.innerText = '';
-    lblTohokuRank.style.color = '#7A756D';
+    elblTohokuRank.innerText = '';
+    elblTohokuRank.style.color = '#7A756D';
 
-    lblKantoRank.innerText = '';
-    lblKantoRank.style.color = '#7A756D';
+    elblKantoRank.innerText = '';
+    elblKantoRank.style.color = '#7A756D';
 
-    lblChubuRank.innerText = '';
-    lblChubuRank.style.color =  '#7A756D';
+    elblChubuRank.innerText = '';
+    elblChubuRank.style.color =  '#7A756D';
 
-    lblKansaiRank.innerText =  '';
-    lblKansaiRank.style.color = '#7A756D';
+    elblKansaiRank.innerText =  '';
+    elblKansaiRank.style.color = '#7A756D';
 
-    lblShikokuRank.innerText = '';
-    lblShikokuRank.style.color = '#7A756D';
+    elblShikokuRank.innerText = '';
+    elblShikokuRank.style.color = '#7A756D';
 
-    lblKyushuRank.innerText = '';
-    lblKyushuRank.style.color = '#7A756D';
+    elblKyushuRank.innerText = '';
+    elblKyushuRank.style.color = '#7A756D';
 
-    lblAllRank.innerText = ''; 
-    lblAllRank.style.color = '#7A756D';
+    elblAllRank.innerText = ''; 
+    elblAllRank.style.color = '#7A756D';
 
     record = getHiScore();
     for(let i in record.dataIndex){
 	if(record.dataIndex[i] === 0){
-	    lblTohokuRank.innerText = record.rank[i];
-	    lblTohokuRank.style.color = getRankColor(record.rank[i]);
+	    elblTohokuRank.innerText = record.rank[i];
+	    elblTohokuRank.style.color = getRankColor(record.rank[i]);
 	    
 	}else if(record.dataIndex[i] === 1){
-	    lblKantoRank.innerText = record.rank[i];
-	    lblKantoRank.style.color = getRankColor(record.rank[i]);
+	    elblKantoRank.innerText = record.rank[i];
+	    elblKantoRank.style.color = getRankColor(record.rank[i]);
 
 	}else if(record.dataIndex[i] === 2){
-	    lblChubuRank.innerText = record.rank[i];
-	    lblChubuRank.style.color = getRankColor(record.rank[i]);
+	    elblChubuRank.innerText = record.rank[i];
+	    elblChubuRank.style.color = getRankColor(record.rank[i]);
 
 	}else if(record.dataIndex[i] === 3){
-	    lblKansaiRank.innerText = record.rank[i];
-	    lblKansaiRank.style.color = getRankColor(record.rank[i]);
+	    elblKansaiRank.innerText = record.rank[i];
+	    elblKansaiRank.style.color = getRankColor(record.rank[i]);
 
 	}else if(record.dataIndex[i] === 4){
-	    lblShikokuRank.innerText = record.rank[i];
-	    lblShikokuRank.style.color = getRankColor(record.rank[i]);
+	    elblShikokuRank.innerText = record.rank[i];
+	    elblShikokuRank.style.color = getRankColor(record.rank[i]);
 
 	}else if(record.dataIndex[i] === 5){
-	    lblKyushuRank.innerText = record.rank[i];
-	    lblKyushuRank.style.color = getRankColor(record.rank[i]);
+	    elblKyushuRank.innerText = record.rank[i];
+	    elblKyushuRank.style.color = getRankColor(record.rank[i]);
 
 	}else if(record.dataIndex[i] === 6){
-	    lblAllRank.innerText = record.rank[i];
-	    lblAllRank.style.color = getRankColor(record.rank[i]);
+	    elblAllRank.innerText = record.rank[i];
+	    elblAllRank.style.color = getRankColor(record.rank[i]);
 	}
 
     }	
@@ -344,60 +344,103 @@ function clickScoreReset() {
     }
   }
 }
-
+let elblScore;
+let elblTime;
+let elblSelectDataRank;
+let elblSelectDataMode;
+let elblEasy;
+let elblNormal;
+let elblHard;
+let elblSelectDataTrg;
+let elblTohoku;
+let elblKanto;
+let elblChubu;
+let elblKinki;
+let elblShikoku;
+let elblKyushu;
+let elblAll;
+let elblTohokuRank;
+let elblKantoRank;
+let elblChubuRank;
+let elblKansaiRank;
+let elblShikokuRank;
+let elblKyushuRank;
+let elblAllRank;
 
 window.onload = function () {
-    'use strict';
+  'use strict';
+  elblScore         = document.getElementById("lblScore");
+  elblTime          = document.getElementById("lblTime");
+  elblSelectDataRank= document.getElementById("lblSelectDataRank");
+  elblSelectDataMode= document.getElementById("lblSelectDataMode");
+  elblEasy          = document.getElementById("lblEasy");
+  elblNormal        = document.getElementById("lblNormal");
+  elblHard          = document.getElementById("lblHard");
+  elblSelectDataTrg = document.getElementById("lblSelectDataTrg");
+  elblTohoku        = document.getElementById("lblTohoku");
+  elblKanto         = document.getElementById("lblKanto");
+  elblChubu         = document.getElementById("lblChubu");
+  elblKinki         = document.getElementById("lblKinki");
+  elblShikoku       = document.getElementById("lblShikoku");
+  elblKyushu        = document.getElementById("lblKyushu");
+  elblAll           = document.getElementById("lblAll");
+  elblTohokuRank    = document.getElementById("lblTohokuRank");
+  elblKantoRank     = document.getElementById("lblKantoRank");
+  elblChubuRank     = document.getElementById("lblChubuRank");
+  elblKansaiRank    = document.getElementById("lblKansaiRank");
+  elblShikokuRank   = document.getElementById("lblShikokuRank");
+  elblKyushuRank    = document.getElementById("lblKyushuRank");
+  elblAllRank       = document.getElementById("lblAllRank");
 
-    rdoTohoku.addEventListener("click", changeTarget, false); 
-    rdoKanto.addEventListener("click", changeTarget, false);  
-    rdoChubu.addEventListener("click", changeTarget, false);  
-    rdoKinki.addEventListener("click", changeTarget, false); 
-    rdoShikoku.addEventListener("click", changeTarget, false); 
-    rdoKyushu.addEventListener("click", changeTarget, false); 
-    rdoAll.addEventListener("click", changeTarget, false); 
+  rdoTohoku.addEventListener("click", changeTarget, false); 
+  rdoKanto.addEventListener("click", changeTarget, false);  
+  rdoChubu.addEventListener("click", changeTarget, false);  
+  rdoKinki.addEventListener("click", changeTarget, false); 
+  rdoShikoku.addEventListener("click", changeTarget, false); 
+  rdoKyushu.addEventListener("click", changeTarget, false); 
+  rdoAll.addEventListener("click", changeTarget, false); 
 
-    btnScoreReset.addEventListener("click", clickScoreReset, false); 
-    btnData.addEventListener("click", clickData, false); 
-    btnPlay.addEventListener("click", clickPlay, false); 
+  btnScoreReset.addEventListener("click", clickScoreReset, false); 
+  btnData.addEventListener("click", clickData, false); 
+  btnPlay.addEventListener("click", clickPlay, false); 
 
-    rdoEasy.addEventListener("click", changeMode, false); 
-    rdoNormal.addEventListener("click", changeMode, false); 
-    rdoHard.addEventListener("click", changeMode, false); 
+  rdoEasy.addEventListener("click", changeMode, false); 
+  rdoNormal.addEventListener("click", changeMode, false); 
+  rdoHard.addEventListener("click", changeMode, false); 
 
-   let param = location.search.split('&')
-   let prmMode;
-   let prmDataIndex;
-   if(param.length === 2){
-	prmMode = param[0].split('=')[1];
-	prmDataIndex = param[1].split('=')[1];
-    }
-   if(prmMode === 'easy'){
-	rdoEasy.checked = true;
-   }else if(prmMode === 'normal'){
-	rdoNormal.checked = true;
-   }else if(prmMode === 'hard'){
-	rdoHard.checked = true;
-   }else{
-        rdoEasy.checked = true;
-   }
-   if(prmDataIndex === '0'){rdoTohoku.checked=true;}
-   else if(prmDataIndex === '1'){rdoKanto.checked=true;}
-   else if(prmDataIndex === '2'){rdoChubu.checked=true;}
-   else if(prmDataIndex === '3'){rdoKinki.checked=true;}
-   else if(prmDataIndex === '4'){rdoShikoku.checked=true;}
-   else if(prmDataIndex === '5'){rdoKyushu.checked=true;}
-   else if(prmDataIndex === '6'){rdoAll.checked=true;}
-   else{rdoTohoku.checked=true;}
+ let param = location.search.split('&')
+ let prmMode;
+ let prmDataIndex;
+ if(param.length === 2){
+      prmMode = param[0].split('=')[1];
+      prmDataIndex = param[1].split('=')[1];
+  }
+ if(prmMode === 'easy'){
+      rdoEasy.checked = true;
+ }else if(prmMode === 'normal'){
+      rdoNormal.checked = true;
+ }else if(prmMode === 'hard'){
+      rdoHard.checked = true;
+ }else{
+      rdoEasy.checked = true;
+ }
+ if(prmDataIndex === '0'){rdoTohoku.checked=true;}
+ else if(prmDataIndex === '1'){rdoKanto.checked=true;}
+ else if(prmDataIndex === '2'){rdoChubu.checked=true;}
+ else if(prmDataIndex === '3'){rdoKinki.checked=true;}
+ else if(prmDataIndex === '4'){rdoShikoku.checked=true;}
+ else if(prmDataIndex === '5'){rdoKyushu.checked=true;}
+ else if(prmDataIndex === '6'){rdoAll.checked=true;}
+ else{rdoTohoku.checked=true;}
 
-   drawHiScore();
-   changeMode();
-   changeTarget();
+ drawHiScore();
+ changeMode();
+ changeTarget();
 
-    let checkOption = document.getElementsByName('rdoMode');
-    checkOption.forEach(function(e) {
-        e.addEventListener("click", function() {           
+  let checkOption = document.getElementsByName('rdoMode');
+  checkOption.forEach(function(e) {
+      e.addEventListener("click", function() {           
 
-        });
-    });
+      });
+  });
 };
