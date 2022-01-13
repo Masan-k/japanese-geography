@@ -56,90 +56,149 @@ function updateSelectScore(){
   elblSelectDataRank.style.color = '#7A756D';
 }
 
+let selectedTarget;
+let selectedMode;
+
 function changeModeColor(){
-  if(rdoEasy.checked){
-     elblSelectDataMode.innerText = "EASY"
-     elblEasy.style.background = "#FFF";
-     elblEasy.style.color  = "#000";
-  }else{
-     elblEasy.style.background = "#000";
-     elblEasy.style.color = "#FFF";
+
+  switch(selectedMode){
+    case 'easy':
+      elblEasy.style.background = "#000";
+      elblEasy.style.color = "#FFF";
+      break;
+    case 'normal':
+      elblNormal.style.background = "#000";
+      elblNormal.style.color = "#FFF";
+      break;
+    case 'hard':
+      elblHard.style.background = "#000";
+      elblHard.style.color = "#FFF";
+      break;
+    default:
+      alert('selectedMode error -> ' + selectedMode);
+      break;
   }
-  if(rdoNormal.checked){
-     elblSelectDataMode.innerText = "NORMAL"
-     elblNormal.style.background = "#FFF";
-     elblNormal.style.color  = "#000";
-  }else{
-     elblNormal.style.background = "#000";
-     elblNormal.style.color = "#FFF";
-  }
-  if(rdoHard.checked){
-     elblSelectDataMode.innerText = "HARD"
-     elblHard.style.background = "#FFF";
-     elblHard.style.color  = "#000";
-  }else{
-     elblHard.style.background = "#000";
-     elblHard.style.color = "#FFF";
+
+  let selectMode = getSelectMode();
+
+  switch(selectMode){
+    case 'easy':
+      selectedMode = 'easy';
+      elblSelectDataMode.innerText = "EASY"
+      elblEasy.style.background = "#FFF";
+      elblEasy.style.color  = "#000";
+      break;
+    case 'normal':
+      selectedMode = 'normal';
+      elblSelectDataMode.innerText = "NORMAL"
+      elblNormal.style.background = "#FFF";
+      elblNormal.style.color  = "#000";
+      break;
+    case 'hard':
+      selectedMode = 'hard';
+      elblSelectDataMode.innerText = "HARD"
+      elblHard.style.background = "#FFF";
+      elblHard.style.color  = "#000";
+      break;
+    default:
+      alert('selectedMode error -> ' + selectedMode);
+      break;
   }
 }
 function changeTargetColor(){
-  if(rdoTohoku.checked){
-     elblSelectDataTrg.innerText = "Tohoku"
-     elblTohoku.style.background = "#FFF";
-     elblTohoku.style.color  = "#000";
-  }else{
-     elblTohoku.style.background = "#000";
-     elblTohoku.style.color = "#FFF";
+  switch(selectedTarget){
+    case '0':
+      elblTohoku.style.background = "#000";
+      elblTohoku.style.color = "#FFF";
+      break;
+
+    case '1':
+      elblKanto.style.background = "#000";
+      elblKanto.style.color = "#FFF";
+      break;
+
+    case '2':
+      elblChubu.style.background = "#000";
+      elblChubu.style.color = "#FFF";
+      break;
+    case '3':
+      elblKinki.style.background = "#000";
+      elblKinki.style.color = "#FFF";
+      break;
+
+    case '4':
+      elblShikoku.style.background = "#000";
+      elblShikoku.style.color = "#FFF";
+      break;
+
+    case '5':
+      elblKyushu.style.background = "#000";
+      elblKyushu.style.color = "#FFF";
+      break;
+    case '6':
+      elblAll.style.background = "#000";
+      elblAll.style.color = "#FFF";
+      break;
+    default:
+      alert('selectedTarget error -> ' + selectedTarget);
   }
-  if(rdoKanto.checked){
-     elblSelectDataTrg.innerText = "Kanto"
-     elblKanto.style.background = "#FFF";
-     elblKanto.style.color  = "#000";
-  }else{
-     elblKanto.style.background = "#000";
-     elblKanto.style.color = "#FFF";
-  }
-  if(rdoChubu.checked){
-     elblSelectDataTrg.innerText = "Chubu"
-     elblChubu.style.background = "#FFF";
-     elblChubu.style.color  = "#000";
-  }else{
-     elblChubu.style.background = "#000";
-     elblChubu.style.color = "#FFF";
-  }
-  if(rdoKinki.checked){
-     elblSelectDataTrg.innerText = "Kinki"
-     elblKinki.style.background = "#FFF";
-     elblKinki.style.color  = "#000";
-  }else{
-     elblKinki.style.background = "#000";
-     elblKinki.style.color = "#FFF";
-  }
-  if(rdoShikoku.checked){
-     elblSelectDataTrg.innerText = "Shikoku"
-     elblShikoku.style.background = "#FFF";
-     elblShikoku.style.color  = "#000";
-  }else{
-     elblShikoku.style.background = "#000";
-     elblShikoku.style.color = "#FFF";
-  }
-  if(rdoKyushu.checked){
-     elblSelectDataTrg.innerText = "Kyushu"
-     elblKyushu.style.background = "#FFF";
-     elblKyushu.style.color  = "#000";
-  }else{
-     elblKyushu.style.background = "#000";
-     elblKyushu.style.color = "#FFF";
-  }
-  if(rdoAll.checked){
-     elblSelectDataTrg.innerText = "All"
-     elblAll.style.background = "#FFF";
-     elblAll.style.color  = "#000";
-  }else{
-     elblAll.style.background = "#000";
-     elblAll.style.color = "#FFF";
+
+  let selectTarget = getSelectTarget();
+  switch(selectTarget){
+    case '0':
+      selectedTarget = '0';
+      elblSelectDataTrg.innerText = "Tohoku"
+      elblTohoku.style.background = "#FFF";
+      elblTohoku.style.color  = "#000";
+      break;
+
+    case '1':
+      selectedTarget = '1';
+      elblSelectDataTrg.innerText = "Kanto"
+      elblKanto.style.background = "#FFF";
+      elblKanto.style.color  = "#000";
+      break;
+
+    case '2':
+      selectedTarget = '2';
+      elblSelectDataTrg.innerText = "Chubu"
+      elblChubu.style.background = "#FFF";
+      elblChubu.style.color  = "#000";
+      break;
+
+    case '3':
+      selectedTarget = '3';
+      elblSelectDataTrg.innerText = "Kinki"
+      elblKinki.style.background = "#FFF";
+      elblKinki.style.color  = "#000";
+      break;
+
+    case '4':
+      selectedTarget = '4';
+      elblSelectDataTrg.innerText = "Shikoku"
+      elblShikoku.style.background = "#FFF";
+      elblShikoku.style.color  = "#000";
+      break;
+
+    case '5':
+      selectedTarget = '5';
+      elblSelectDataTrg.innerText = "Kyushu"
+      elblKyushu.style.background = "#FFF";
+      elblKyushu.style.color  = "#000";
+      break;
+
+    case '6':
+      selectedTarget = '6';
+      elblSelectDataTrg.innerText = "All"
+      elblAll.style.background = "#FFF";
+      elblAll.style.color  = "#000";
+      break;
+
+    default:
+      alert('selectedTarget error -> ' + selectedTarget);
   }
 }
+
 function getSelectTarget(){
     let eRdoTrg = document.getElementsByName("rdoTrg");
     for(let i=0;i<eRdoTrg.length;i++){
@@ -408,30 +467,56 @@ window.onload = function () {
   rdoNormal.addEventListener("click", changeMode, false); 
   rdoHard.addEventListener("click", changeMode, false); 
 
- let param = location.search.split('&')
- let prmMode;
- let prmDataIndex;
- if(param.length === 2){
-      prmMode = param[0].split('=')[1];
-      prmDataIndex = param[1].split('=')[1];
+  let param = location.search.split('&')
+  let prmMode;
+  let prmDataIndex;
+  if(param.length === 2){
+    prmMode = param[0].split('=')[1];
+    prmDataIndex = param[1].split('=')[1];
+  }else{
+    prmMode = 'easy';
+    prmDataIndex = '0';
   }
+ 
  if(prmMode === 'easy'){
       rdoEasy.checked = true;
+      selectedMode = 'easy';
  }else if(prmMode === 'normal'){
       rdoNormal.checked = true;
+      selectedMode = 'normal';
  }else if(prmMode === 'hard'){
       rdoHard.checked = true;
+      selectedMode = 'hard';
  }else{
       rdoEasy.checked = true;
+      selectedMode = 'error';
  }
- if(prmDataIndex === '0'){rdoTohoku.checked=true;}
- else if(prmDataIndex === '1'){rdoKanto.checked=true;}
- else if(prmDataIndex === '2'){rdoChubu.checked=true;}
- else if(prmDataIndex === '3'){rdoKinki.checked=true;}
- else if(prmDataIndex === '4'){rdoShikoku.checked=true;}
- else if(prmDataIndex === '5'){rdoKyushu.checked=true;}
- else if(prmDataIndex === '6'){rdoAll.checked=true;}
- else{rdoTohoku.checked=true;}
+
+ if(prmDataIndex === '0'){
+   rdoTohoku.checked=true
+   selectedTarget = '0';
+ }else if(prmDataIndex === '1'){
+   rdoKanto.checked=true;
+   selectedTarget = '1';
+ }else if(prmDataIndex === '2'){
+   rdoChubu.checked=true;
+   selectedTarget = '2';
+ }else if(prmDataIndex === '3'){
+   rdoKinki.checked=true;
+   selectedTarget = '3';
+
+ }else if(prmDataIndex === '4'){
+   rdoShikoku.checked=true;
+   selectedTarget = '4';
+ }else if(prmDataIndex === '5'){
+   rdoKyushu.checked=true;
+   selectedTarget = '5';
+ }else if(prmDataIndex === '6'){
+   rdoAll.checked=true;
+   selectedTarget = '6';
+ }else{
+   selectedTarget = '-1';
+ }
 
  drawHiScore();
  changeMode();
