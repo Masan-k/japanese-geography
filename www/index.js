@@ -305,6 +305,9 @@ function clickPlay() {
     window.location.href = 'main.html?mode='+ selectMode + '&index=' + selectDataIndex;
 
 }
+function clickAbout() {
+  window.location.href = 'about.html';
+}
 function clickScoreReset() {
   let check = window.confirm("Deletes the score of the selected MODE. Is it OK?");
 
@@ -333,6 +336,7 @@ window.onload = function () {
     rdoAll.addEventListener("click", changeTarget, false); 
 
     btnScoreReset.addEventListener("click", clickScoreReset, false); 
+    btnAbout.addEventListener("click", clickAbout, false); 
     btnPlay.addEventListener("click", clickPlay, false); 
 
     rdoEasy.addEventListener("click", changeMode, false); 
