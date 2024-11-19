@@ -24,9 +24,9 @@ let answer = [];
 let pos =[];
 let questionCount = 0;
 let startTime;
+let answerStartTime;
 
 function getRandom(min, max) {
-    'use strict';
     
     let range = max - min + 1;
     let random = Math.floor(Math.random() * range);
@@ -43,8 +43,8 @@ const GOOD_SEC = 10;
 const BAD_SEC = 15;
 
 let gameTime;
+
 function main(){
-  'use strict';
   let targetRural;
 
   if(dataIndex === '0'){
@@ -142,7 +142,6 @@ function main(){
   },20);
 
   setQuestion();
-  
   txtInput.addEventListener('compositionend', (e) => {
 
     if(txtInput.value === currentAnswer || txtInput.value.replace('県','') === currentAnswer.replace('県','') || txtInput.value.replace('府','') === currentAnswer.replace('府','') || txtInput.value.replace('都','') === currentAnswer.replace('都','')){
@@ -180,15 +179,17 @@ function main(){
 }
 function drawMarker(pos){
 
+  txtInput.focus();
+  const img = document.getElementById("imgMap");
   const SVG_ID="svgMarker";
-  const MAX_HEIGHT = 755;
   
+  // 表示されているサイズを取得
   if(pos === undefined){return}
   const svgDiv = document.getElementById(SVG_ID);
   if(svgDiv != null){svgDiv.remove();}
 
-  let posX = pos[0];
-  let posY = MAX_HEIGHT - pos[1];
+  let posX = pos[0]*(img.offsetWidth/img.naturalWidth);
+  let posY = img.offsetHeight - pos[1]*(img.offsetHeight/img.naturalHeight);
 
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute("id", "svgMarker");
@@ -237,7 +238,6 @@ function completion(){
 
 
 function saveScore(){
-  'use strict';
 
   let nowDate = new Date();
   let year = nowDate.getFullYear();
@@ -263,6 +263,7 @@ function saveScore(){
   lblQuestion.innerText = 'CLEAR!! --> ' + rank 
 }
 
+let currentAnswer;
 let currentQuestion;
 let currentPos;
 function setQuestion(){
@@ -290,19 +291,15 @@ function clickRetry(){
 }
 
 window.onload = function(){
-  'use strict';
 
   init();
-  txtInput.focus();
-
   btnMenu.addEventListener("click", clickMenu, false); 
   btnRetry.addEventListener("click", clickRetry, false);
-
   //------------
   // SET PARAM
   //------------
   let param = location.search.split('&')
- if(param.length === 2){
+  if(param.length === 2){
     mode = param[0].split('=')[1];
     dataIndex = param[1].split('=')[1];
   }else{
@@ -310,7 +307,7 @@ window.onload = function(){
     return;
   }
 
- if(mode === 'easy' || mode === 'normal'){
+  if(mode === 'easy' || mode === 'normal'){
     document.getElementById("imgMap").style.display ="block";
   }else if(mode ==='hard'){
     document.getElementById("imgMap").style.display ="none";
@@ -332,9 +329,9 @@ window.onload = function(){
     jsonFile = request.response;
     isOpenFile = true;
   }
+
   
   let intervalId = setInterval(firstStart => {
-
     if(!isOpenFile){return};
     if(readyCount < 0){
       clearInterval(intervalId);
