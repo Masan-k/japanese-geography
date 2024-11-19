@@ -60,3 +60,10 @@ body{
 .custom-info{
   font-size:1em;
 } 
+
+#svgMarker {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: absolute; /* 必要に応じて変更 */
+}
