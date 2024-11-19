@@ -9,6 +9,10 @@
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <style>
+      .responsive-image {
+        max-width: 100%;
+        height: auto;
+      }
 
       html{
           background-color: #131516;
@@ -41,7 +45,7 @@
   </head>
   <body>
     <div id="mapContainer" style="position: relative;">
-      <img id='imgMap' src="img/map.svg" alt="blankmap" style="display:none; position:absolute;top:0;left:0;right:0;margin:auto;z-index:-999;">
+      <img id='imgMap' src="img/map.svg" alt="blankmap" style="display:none; position:absolute;top:0;left:0;right:0;margin:auto;z-index:-999;" class="responsive-image">
       <div id="mapBackGroundContainer" style="background:#131516;opacity:80%;">
         <table style="width: 100%;">
           <tr>
