@@ -193,8 +193,8 @@ function drawMarker(pos){
 
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute("id", "svgMarker");
-  svg.setAttribute("width", img.offsetWidth);
-  svg.setAttribute("height", img.offsetHeight);
+  svg.setAttribute("viewBox", "0 0 "+img.offsetWidth+" "+img.offsetHeight);
+  svg.setAttribute("preserveAspectRatio", "xMinYMin meet");
 
   const circle= document.createElementNS('http://www.w3.org/2000/svg', 'circle');
   circle.setAttribute('cx','10');
