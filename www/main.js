@@ -188,8 +188,8 @@ function drawMarker(pos){
   const svgDiv = document.getElementById(SVG_ID);
   if(svgDiv != null){svgDiv.remove();}
 
-  let posX = pos[0]*(img.offsetWidth/img.naturalWidth);
-  let posY = img.offsetHeight - pos[1]*(img.offsetHeight/img.naturalHeight);
+  let posX = pos[0]*(img.offsetWidth/570);
+  let posY = img.offsetHeight - pos[1]*(img.offsetHeight/750);
 
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute("id", "svgMarker");
