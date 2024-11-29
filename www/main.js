@@ -190,7 +190,6 @@ function drawMarker(pos){
 
   let posX = pos[0]*(img.offsetWidth/570);
   let posY = img.offsetHeight - pos[1]*(img.offsetHeight/750);
-
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute("id", "svgMarker");
   svg.setAttribute("viewBox", "0 0 "+img.offsetWidth+" "+img.offsetHeight);
@@ -200,24 +199,32 @@ function drawMarker(pos){
   circle.setAttribute('cx','10');
   circle.setAttribute('cy','10');
   circle.setAttribute('r','10');
-  circle.setAttribute('fill','#EA4335');
 
+  circle.setAttribute('fill','none');
+  circle.setAttribute('stroke','#EA4335');
+
+ /*
   const circleMini= document.createElementNS('http://www.w3.org/2000/svg', 'circle');
   circleMini.setAttribute('cx','10');
   circleMini.setAttribute('cy','10');
   circleMini.setAttribute('r','5');
-  circleMini.setAttribute('fill','#811411');
+ */
+  //circleMini.setAttribute('fill',"none");
+  //circleMini.setAttribute('stroke','#811411');
 
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('d',"M 0 10 C 3 23, 7 18, 10 30 T 10 30 C 12 18, 17 23, 20 10 Z");
-  path.setAttribute('fill',"#EA4335");
+  //path.setAttribute('d',"M 0 10 C 3 23, 7 18, 10 30 T 10 30 C 12 18, 17 23, 20 10 Z");
+  path.setAttribute('d',"M 0 10 C 3 23, 7 18, 10 30 T 10 30 C 12 18, 17 23, 20 10");
+
+  path.setAttribute('fill',"none");
+  path.setAttribute('stroke',"#EA4335");
 
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   g.setAttribute("transform", "translate("+(posX-10)+","+(posY-30)+")");
 
   g.appendChild(path);
   g.appendChild(circle);
-  g.appendChild(circleMini);
+  //g.appendChild(circleMini);
 
   svg.appendChild(g);
 
