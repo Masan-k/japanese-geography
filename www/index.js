@@ -36,6 +36,17 @@ function updateSelectScore(){
 }
 
 function changeModeColor(){
+  console.log("call change mode");
+
+  if(rdoVeryEasy.checked){
+     lblSelectDataMode.innerText = "VERY EASY"
+     lblVeryEasy.style.background = "#FFF";
+     lblVeryEasy.style.color  = "#000";
+  }else{
+     lblVeryEasy.style.background = "#000";
+     lblVeryEasy.style.color = "#FFF";
+  }
+
   if(rdoEasy.checked){
      lblSelectDataMode.innerText = "EASY"
      lblEasy.style.background = "#FFF";
@@ -339,6 +350,7 @@ window.onload = function () {
     btnAbout.addEventListener("click", clickAbout, false); 
     btnPlay.addEventListener("click", clickPlay, false); 
 
+    rdoVeryEasy.addEventListener("click", changeMode, false); 
     rdoEasy.addEventListener("click", changeMode, false); 
     rdoNormal.addEventListener("click", changeMode, false); 
     rdoHard.addEventListener("click", changeMode, false); 
@@ -356,6 +368,8 @@ window.onload = function () {
 	rdoNormal.checked = true;
    }else if(prmMode === 'hard'){
 	rdoHard.checked = true;
+   }else if(prmMode === 'veryEasy'){
+	rdoVeryEasy.checked = true;
    }else{
         rdoEasy.checked = true;
    }

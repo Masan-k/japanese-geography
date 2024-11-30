@@ -96,6 +96,11 @@ fieldset{
  border: 1.5px solid #FFF;
 }
 
+#lblVeryEasy{
+ font-size:1.5em ; 
+ line-height:3em;
+}
+
 #fixed{
  margin: 0 auto;
  position: fixed; 

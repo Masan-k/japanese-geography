@@ -36,13 +36,13 @@ function getRandom(min, max) {
 let mode = null;
 let dataIndex = null;
 let timeIntervalId;
-let workLength;
 
 const GREAT_SEC = 5;
 const GOOD_SEC = 10;
 const BAD_SEC = 15;
 
 let gameTime;
+let workLength;
 
 function main(){
   let targetRural;
@@ -81,27 +81,36 @@ function main(){
   let workQuestion = ascQuestion.slice();
   let workAnswer = ascAnswer.slice();
   let workPos = ascPos.slice();
-
+  workLength = workQuestion.length;
+  console.log('workLengh: ' + workLength);
   //SHUFFLE
   let randomQuestion = [];
   let randomAnswer = [];
   let randomPos = [];
-  workLength = workQuestion.length
-  while(randomQuestion.length < workLength){
-    for(let i in workQuestion){
-      let trgIndex = getRandom(0 ,workQuestion.length - i - 1);
-      randomQuestion.push(workQuestion[trgIndex]);
-      randomAnswer.push(workAnswer[trgIndex]);
-      randomPos.push(workPos[trgIndex]);
+
+  
+  if(mode === 'veryEasy'){
+    randomQuestion = workQuestion;
+    randomAnswer = workAnswer;
+    randomPos = workPos;
+
+  }else{
+    while(randomQuestion.length < workLength){
+      for(let i in workQuestion){
+        let trgIndex = getRandom(0 ,workQuestion.length - i - 1);
+        randomQuestion.push(workQuestion[trgIndex]);
+        randomAnswer.push(workAnswer[trgIndex]);
+        randomPos.push(workPos[trgIndex]);
 
 
-      workQuestion.splice(trgIndex, 1);
-      workAnswer.splice(trgIndex, 1);
-      workPos.splice(trgIndex, 1);
+        workQuestion.splice(trgIndex, 1);
+        workAnswer.splice(trgIndex, 1);
+        workPos.splice(trgIndex, 1);
+      }
     }
   }
 
-  if(mode === 'easy'){
+  if(mode === 'veryEasy' || mode === 'easy'){
     question = ascQuestion;
     answer = ascAnswer;
     pos = ascPos;
@@ -281,7 +290,7 @@ function setQuestion(){
   txtInput.value = '';
 
   currentPos = pos.shift();
-  if(mode === 'easy' || mode === 'normal'){
+  if(mode === 'veryEasy' || mode === 'easy' || mode === 'normal'){
     drawMarker(currentPos);
   }
   questionCount += 1;
@@ -314,7 +323,7 @@ window.onload = function(){
     return;
   }
 
-  if(mode === 'easy' || mode === 'normal'){
+  if(mode === 'veryEasy' || mode === 'easy' || mode === 'normal'){
     document.getElementById("imgMap").style.display ="block";
   }else if(mode ==='hard'){
     document.getElementById("imgMap").style.display ="none";
