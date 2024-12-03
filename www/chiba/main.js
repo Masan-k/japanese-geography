@@ -1,44 +1,7 @@
 ﻿/*globals window, document, setInterval, event , localStorage */
 'use strict';
 
-const GREAT_SEC = 5;
-const GOOD_SEC = 10;
-const BAD_SEC = 15;
-
-const m_timeIntervalId = {
-  data: "-1",
-  getData: function () {return this.data;},
-  setData: function (newData) {this.data = newData;}
-};
-
-const m_currentQuestion = {
-  data: "-1",
-  getData: function () {return this.data;},
-  setData: function (newData) {this.data = newData;}
-};
-const m_currentAnswer = {
-  data: "-1",
-  getData: function () {return this.data;},
-  setData: function (newData) {this.data = newData;}
-};
-const m_answerStartTime = {
-  data: "-1",
-  getData: function () {return this.data;},
-  setData: function (newData) {this.data = newData;}
-};
-const m_questionCount = {
-  data: "-1",
-  getData: function () {return this.data;},
-  setData: function (newData) {this.data = newData;}
-};
-
-const m_json = {
-  data: "-1",
-  getData: function () {return this.data;},
-  setData: function (newData) {this.data = newData;}
-};
-
-const m_readyCount = {
+const m_targetCode = {
   data: -1,
   getData: function () {return this.data;},
   setData: function (newData) {this.data = newData;}
@@ -50,37 +13,21 @@ const m_mode = {
   setData: function (newData) {this.data = newData;}
 };
 
-const m_targetCode = {
-  data: -1,
+const m_json = {
+  data: "-1",
   getData: function () {return this.data;},
   setData: function (newData) {this.data = newData;}
-};
-const m_gameScore = {
-  data: -1,
-  getData: function () {return this.data;},
-  setData: function (newData) {this.data = newData;}
-};
-const m_startTime = {
-  data: -1,
-  getData: function () {return this.data;},
-  setData: function (newData) {this.data = newData;}
-};
-const m_question = {
-  data: -1,
-  getData: function () {return this.data;},
-  setData: function (newData) {this.data = newData;}
-};
-
-function getRandom(min, max) {
-    let range = max - min + 1;
-    let random = Math.floor(Math.random() * range);
-    return random + min;
 };
 
 window.onload = function(){
-
   const requestURL = './contents.json'; //CROSSエラーコード
   let request = new XMLHttpRequest();
+
+  const m_readyCount = {
+    data: -1,
+    getData: function () {return this.data;},
+    setData: function (newData) {this.data = newData;}
+  };
 
   function init(){
     let param = location.search.split('&')
@@ -140,12 +87,55 @@ window.onload = function(){
   }
 }
 
-
-
-
- 
-
 function main(){
+
+  const m_startTime = {
+    data: -1,
+    getData: function () {return this.data;},
+    setData: function (newData) {this.data = newData;}
+  };
+
+  const m_currentQuestion = {
+    data: "-1",
+    getData: function () {return this.data;},
+    setData: function (newData) {this.data = newData;}
+  };
+  const m_currentAnswer = {
+    data: "-1",
+    getData: function () {return this.data;},
+    setData: function (newData) {this.data = newData;}
+  };
+  const m_answerStartTime = {
+    data: "-1",
+    getData: function () {return this.data;},
+    setData: function (newData) {this.data = newData;}
+  };
+  const m_questionCount = {
+    data: "-1",
+    getData: function () {return this.data;},
+    setData: function (newData) {this.data = newData;}
+  };
+
+  const m_gameScore = {
+    data: -1,
+    getData: function () {return this.data;},
+    setData: function (newData) {this.data = newData;}
+  };
+
+  function getRandom(min, max) {
+      let range = max - min + 1;
+      let random = Math.floor(Math.random() * range);
+      return random + min;
+  };
+  const m_timeIntervalId = {
+    data: "-1",
+    getData: function () {return this.data;},
+    setData: function (newData) {this.data = newData;}
+  };
+
+  const GREAT_SEC = 5;
+  const GOOD_SEC = 10;
+  const BAD_SEC = 15;
 
   let question;
   let answer;
@@ -195,9 +185,7 @@ function main(){
     lblQuestion.innerText = lblQuestion.innerText + rank; 
   }
 
-  
   function setQuestion(){
-
     function drawMarker(cPos){
       if(cPos === undefined){return}
       const img = document.getElementById("imgMap");
@@ -259,7 +247,7 @@ function main(){
   }
 
   for(let rec of m_json.getData()){
-    if(rec.group === m_targetCode.getData() || m_targetCode.getData() === 'ALL'){
+    if(rec.group === m_targetCode.getData() || m_targetCode.getData() === 'all'){
       ascQuestion.push(rec.code);
       ascAnswer.push(rec.name);
       ascPos.push(rec.pos);
@@ -271,7 +259,6 @@ function main(){
   workAnswer = ascAnswer.slice();
   workPos = ascPos.slice();
   workKana = ascKana.slice();
-
   workLength = workQuestion.length;
  
   //SHUFFLE
@@ -325,8 +312,9 @@ function main(){
     lblTime.innerText = 'TIME:' + ((Date.now() - m_startTime.getData()) / 1000).toFixed(1);
     gameTime = (Date.now() - m_answerStartTime.getData()) / 1000;
 
+    //time over
     if(BAD_SEC < gameTime){
-        lblResult.innerText = 'POOR';
+        lblResult.innerHTML = 'POOR<br>' + m_currentAnswer.getData();
         lblResult.style.color = '#FF00FF';
         lblResult.style.opacity = 1.0;
         setQuestion();
@@ -378,6 +366,7 @@ function main(){
     }
   });
 }
+
 function clickMenu(){
   window.location.href = 'index.html?mode='+ m_mode.getData() + '&index=' + m_targetCode.getData();
 }

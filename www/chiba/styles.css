@@ -97,6 +97,10 @@ input[type="radio"]:checked + label {
 .radio-none{
    display: none;
 }
+.labelRank{
+  font-size:2rem;
+}
+
 .select-mode-button{
   display:block; /* labelのwidthを設定するために必要*/
   padding-top:15px;
