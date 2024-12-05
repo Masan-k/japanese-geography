@@ -44,7 +44,7 @@ function getSelectTarget(){
 }
 
 function getHiScore() {
-  let MAX_TARGETCODE = 6;
+  let MAX_TARGETCODE = 10;
 
   let result = new Object();
 
@@ -53,7 +53,6 @@ function getHiScore() {
   let sec = [];
   let targetCode = [];
   let mode = [];
-
 
   let lsSort = [];
   let lsSortTargetCode = [];
@@ -144,11 +143,19 @@ function drawHiScore(){
   lblRank1.innerText = '-';
   lblRank2.innerText = '-';
   lblRank3.innerText = '-';
+  lblRank4.innerText = '-';
+  lblRank5.innerText = '-';
+  lblRank6.innerText = '-';
+  lblRank7.innerText = '-';
   lblRankAll.innerText = '-';
 
   lblRank1.style.color = 'grey';
   lblRank2.style.color = 'grey';
   lblRank3.style.color = 'grey';
+  lblRank4.style.color = 'grey';
+  lblRank5.style.color = 'grey';
+  lblRank6.style.color = 'grey';
+  lblRank7.style.color = 'grey';
   lblRankAll.style.color = 'grey';
 
   lblScore.textContent = ' - ';
@@ -158,7 +165,6 @@ function drawHiScore(){
   let selectTarget = getSelectTarget();
 
   let record = getHiScore();
-  console.log("record");
   console.log(record);
   for(let i=0; i<record.targetCode.length; i++){
     if(record.targetCode[i].toString() === selectTarget){
@@ -166,7 +172,6 @@ function drawHiScore(){
       lblTime.textContent = record.sec[i];
     }
   }
-  
 
   for(let i=0; i<record.targetCode.length; i++){
     if(record.targetCode[i] === 1){
@@ -180,6 +185,22 @@ function drawHiScore(){
     }else if(record.targetCode[i] === 3){
       lblRank3.innerText = record.rank[i];
       lblRank3.style.color = getRankColor(record.rank[i]);
+
+    }else if(record.targetCode[i] === 4){
+      lblRank4.innerText = record.rank[i];
+      lblRank4.style.color = getRankColor(record.rank[i]);
+
+    }else if(record.targetCode[i] === 5){
+      lblRank5.innerText = record.rank[i];
+      lblRank5.style.color = getRankColor(record.rank[i]);
+
+    }else if(record.targetCode[i] === 6){
+      lblRank6.innerText = record.rank[i];
+      lblRank6.style.color = getRankColor(record.rank[i]);
+
+    }else if(record.targetCode[i] === 7){
+      lblRank7.innerText = record.rank[i];
+      lblRank7.style.color = getRankColor(record.rank[i]);
 
     }else if(record.targetCode[i] === 'all'){
       lblRankAll.innerText = record.rank[i];
