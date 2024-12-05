@@ -355,9 +355,9 @@ function main(){
         score = 0;
       }
 
-      lblResult.style.opacity = 1.0;
-      lblScore.innerText = 'SCORE:' + m_gameScore.getData();
       m_gameScore.setData(m_gameScore.getData()+score);
+      lblScore.innerText = 'SCORE:' + m_gameScore.getData();
+      lblResult.style.opacity = 1.0;
 
       setQuestion();
 
