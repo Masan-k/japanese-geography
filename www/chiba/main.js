@@ -111,7 +111,7 @@ function main(){
     setData: function (newData) {this.data = newData;}
   };
   const m_questionCount = {
-    data: "-1",
+    data: 0,
     getData: function () {return this.data;},
     setData: function (newData) {this.data = newData;}
   };
@@ -241,8 +241,8 @@ function main(){
       drawMarker(pos.shift());
     }
 
-    m_questionCount.setData(m_questionCount.getData()+1);
     m_answerStartTime.setData(Date.now());
+    m_questionCount.setData(m_questionCount.getData()+1);
     lblCount.innerText = 'COUNT:' + m_questionCount.getData() + '/' + workLength;
   }
 
