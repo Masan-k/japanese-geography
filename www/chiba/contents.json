@@ -5,6 +5,7 @@
   {"code":"katsunan-03","name":"習志野市",  "pos":[118,205],"group":"1","kana":""},
   {"code":"katsunan-04","name":"八千代市",  "pos":[148,180],"group":"1","kana":""},
   {"code":"katsunan-05","name":"浦安市",    "pos":[74,221],"group":"1","kana":""},
+  {"code":"katsunan-06","name":"市原市",    "pos":[154,288],"group":"1","kana":""},
 
   {"code":"h-katsushika-01","name":"松戸市",  "pos":[85,150], "group":"2","kana":""},
   {"code":"h-katsushika-02","name":"野田市",  "pos":[65,75],  "group":"2","kana":""},
@@ -49,7 +50,7 @@
   {"code":"isumi-01","name":"勝浦市",      "pos":[210,433],"group":"7","kana":""},
   {"code":"isumi-02","name":"いすみ市",    "pos":[236,385],"group":"7","kana":""},
   {"code":"isumi-03","name":"大多喜町",    "pos":[188,402],"group":"7","kana":"おおたきまち"},
-  {"code":"isumi-04","name":"御宿町",      "pos":[210,428],"group":"7","kana":"おんじゅくまち"},
+  {"code":"isumi-04","name":"御宿町",      "pos":[235,420],"group":"7","kana":"おんじゅくまち"},
   {"code":"awa-01","name":"館山市",        "pos":[60,530], "group":"7","kana":""},
   {"code":"awa-02","name":"鴨川市",        "pos":[142,451], "group":"7","kana":""},
   {"code":"awa-03","name":"南房総市",      "pos":[91,479], "group":"7","kana":""},

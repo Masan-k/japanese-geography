@@ -165,7 +165,6 @@ function drawHiScore(){
   let selectTarget = getSelectTarget();
 
   let record = getHiScore();
-  console.log(record);
   for(let i=0; i<record.targetCode.length; i++){
     if(record.targetCode[i].toString() === selectTarget){
       lblScore.textContent = record.score[i];
