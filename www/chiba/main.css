@@ -41,9 +41,11 @@ body{
   font:2rem Meiryo;
   text-align:center;
   z-index:10;
-  background:#555;
-  color:white;
-  opacity:50%;
+  border: 1px solid;
+  background-color: transparent;
+  /*background:#555;*/
+  /*color:white;*/
+  opacity:30%;
 
   width: 100%;
 
