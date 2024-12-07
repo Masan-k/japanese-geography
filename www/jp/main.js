@@ -134,7 +134,7 @@ function main(){
     gameTime = (Date.now() - answerStartTime) / 1000;
 
     if(BAD_SEC < gameTime){
-        lblResult.innerText = 'POOR';
+        lblResult.innerHTML = 'POOR<br>' + currentAnswer;
         lblResult.style.color = '#FF00FF';
         lblResult.style.opacity = 1.0;
         setQuestion();
