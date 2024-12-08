@@ -1,26 +1,13 @@
 ﻿/*globals window, document, setInterval, event , localStorage */
 'use strict';
 
+const APP_CODE ='loopeeCHIBA';
+
 function changeMode(){
   drawHiScore();
 }
 function changeTarget(){
   drawHiScore();
-}
-
-function clickPlay() {
-  let selectTarget = getSelectTarget();
-  let selectMode = getSelectMode();
-
-  if(selectMode === undefined){
-    alert('Select "Mode".');
-    return;
-  }
-  if(selectTarget === undefined){
-    alert('Select "Target".');
-    return;
-  }
-  window.location.href = 'main.html?mode='+ selectMode + '&index=' + selectTarget;
 }
 
 function getSelectMode(){
@@ -70,7 +57,7 @@ function getHiScore() {
     for(let key in localStorage) {
       let keys = key.split(',');
 
-      if(keys[0] === 'loopeeCHIBA' && keys[1] === selectMode && keys[2] === i.toString()){
+      if(keys[0] === APP_CODE && keys[1] === selectMode && keys[2] === i.toString()){
         lsSort.push(localStorage.getItem(keys));
         lsSortTargetCode.push(i);
       }
@@ -79,7 +66,7 @@ function getHiScore() {
   for(let key in localStorage) {
     let keys = key.split(',');
 
-    if(keys[0] === 'loopeeCHIBA' && keys[1] === selectMode && keys[2] === 'all'){
+    if(keys[0] === APP_CODE && keys[1] === selectMode && keys[2] === 'all'){
       lsSort.push(localStorage.getItem(keys));
       lsSortTargetCode.push('all');
     }
@@ -125,6 +112,7 @@ function getHiScore() {
   
   return result;
 }
+
 
 function getRankColor(rank){
   if(rank === 'AAA' || rank === 'AA' || rank === 'A' || rank === 'B'){
@@ -214,7 +202,34 @@ window.onload = function () {
   let prmMode;
   let prmTargetCode;
   
-  btnPlay.addEventListener("click", clickPlay, false); 
+
+  btnPlay.addEventListener("click", () => {
+    let selectTarget = getSelectTarget();
+    let selectMode = getSelectMode();
+    if(selectMode === undefined){
+      alert('Select "Mode".');
+      return;
+    }
+    if(selectTarget === undefined){
+      alert('Select "Target".');
+      return;
+    }
+    window.location.href = 'main.html?mode='+ selectMode + '&index=' + selectTarget;
+  }); 
+
+  btnReset.addEventListener("click", () => {
+    let check = window.confirm("Deletes the score of the selected MODE. Is it OK?");
+    if (check){
+      let selectMode = getSelectMode();
+      for(let key in localStorage) {
+        let keys = key.split(',');
+        if(keys[0] === APP_CODE &&  keys[1] === selectMode){
+          localStorage.removeItem(key);
+          drawHiScore();
+        }
+      }
+   }
+  }); 
 
   rdoVeryEasy.addEventListener("click", changeMode, false);
   rdoEasy.addEventListener("click", changeMode, false);

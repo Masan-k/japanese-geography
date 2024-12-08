@@ -16,7 +16,7 @@
 
   {"code":"inba-01","name":"成田市",   "pos":[240,145],"group":"3","kana":""},
   {"code":"inba-02","name":"佐倉市",   "pos":[192,185],"group":"3","kana":""},
-  {"code":"inba-03","name":"四街道市", "pos":[117,209],"group":"3","kana":""},
+  {"code":"inba-03","name":"四街道市", "pos":[177,208],"group":"3","kana":""},
   {"code":"inba-04","name":"八街市",   "pos":[220,220],"group":"3","kana":""},
   {"code":"inba-05","name":"印西市",   "pos":[181,152],"group":"3","kana":""},
   {"code":"inba-06","name":"白井市",   "pos":[132,149],"group":"3","kana":""},
@@ -45,7 +45,7 @@
   {"code":"chosei-04","name":"長生村",    "pos":[242,326],"group":"6","kana":""},
   {"code":"chosei-05","name":"白子町",    "pos":[250,308],"group":"6","kana":""},
   {"code":"chosei-06","name":"長柄町",    "pos":[190,310],"group":"6","kana":""},
-  {"code":"chosei-07","name":"長南町",    "pos":[223,304],"group":"6","kana":"ちょうなんまち"},
+  {"code":"chosei-07","name":"長南町",    "pos":[200,345],"group":"6","kana":"ちょうなんまち"},
 
   {"code":"isumi-01","name":"勝浦市",      "pos":[210,433],"group":"7","kana":""},
   {"code":"isumi-02","name":"いすみ市",    "pos":[236,385],"group":"7","kana":""},
