@@ -43,7 +43,7 @@ window.onload = function(){
       document.getElementById("imgMap").style.display ="block";
 
     }else if(m_mode.getData() ==='hard'){
-      document.getElementById("imgMap").src = "map_chiba_noline.svg";
+      document.getElementById("imgMap").src = "./img/map_chiba_noline.svg";
       document.getElementById("imgMap").style.display ="block";
     }else{
       alert('The parameters are over');
