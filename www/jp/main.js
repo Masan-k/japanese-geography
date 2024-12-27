@@ -17,6 +17,8 @@ function init(){
     lblScore.innerText = 'SCORE:';
     lblTime.innerText = 'TIME:';
     lblCount.innerText = 'COUNT:';
+
+
 }
 
 let question = [];
@@ -88,6 +90,9 @@ function main(){
   let randomAnswer = [];
   let randomPos = [];
 
+  if(mode === 'hard'){
+    document.getElementById("imgMap").src = './img/map_noline.svg';
+  }
   
   if(mode === 'veryEasy'){
     randomQuestion = workQuestion;
@@ -290,9 +295,7 @@ function setQuestion(){
   txtInput.value = '';
 
   currentPos = pos.shift();
-  if(mode === 'veryEasy' || mode === 'easy' || mode === 'normal'){
-    drawMarker(currentPos);
-  }
+  drawMarker(currentPos);
   questionCount += 1;
   lblCount.innerText = 'COUNT:' + questionCount + '/' + workLength;
   answerStartTime = Date.now();
@@ -323,10 +326,8 @@ window.onload = function(){
     return;
   }
 
-  if(mode === 'veryEasy' || mode === 'easy' || mode === 'normal'){
+  if(mode === 'veryEasy' || mode === 'easy' || mode === 'normal' || mode === 'hard'){
     document.getElementById("imgMap").style.display ="block";
-  }else if(mode ==='hard'){
-    document.getElementById("imgMap").style.display ="none";
   }else{
     alert('The parameters are over');
     return;

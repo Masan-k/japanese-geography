@@ -239,9 +239,7 @@ function main(){
     m_currentAnswer.setData(answer.shift());
     txtInput.value = '';
 
-    if(m_mode.getData() === 'veryEasy' || m_mode.getData() === 'easy' || m_mode.getData() === 'normal'){
-      drawMarker(pos.shift());
-    }
+    drawMarker(pos.shift());
 
     m_answerStartTime.setData(Date.now());
     m_questionCount.setData(m_questionCount.getData()+1);
