@@ -1,9 +1,0 @@
-
-2022.01.22
-* titleタグの修正main,index
-* JSONファイル参照機能の廃止
- （index.htmlからボタン削除、index.jsからclickイベントを削除）
-* メニューのMode画面の拡大(index.html classButtonのマージン変更）
-* ゲーム画面の地図が重なっているのがバグのように感じる
-　[main.html]
-　　・QAを囲むコンテナを追加、透過度50%

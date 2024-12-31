@@ -5,8 +5,9 @@
 
 ## 使い方
 1. スマートフォンで下記のどちらかのサイトにアクセスします。※PCブラウザは動作未確認
-[JP](https://masan-k.github.io/loopeeJP/www/jp/)
-[千葉](https://masan-k.github.io/loopeeJP/www/jp/)
+[全国](https://masan-k.github.io/loopeeJP/www/jp/)
+[千葉](https://masan-k.github.io/loopeeJP/www/chiba/)
+[東京（製作中）](https://masan-k.github.io/loopeeJP/www/tokyo/)
 2. 「対象」と「モード」を選択し「PLAY」ボタンをクリックします。
 3. 都道府県コードが表示されるので、その都道府県名を入力します。正解するか制限時間になると次の問題が表示されます。
 4. 出題が終わるまで3をくり返します。
