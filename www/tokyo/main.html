@@ -7,10 +7,114 @@
     <title>loopeeTOKYO</title>
     <!-- <script type="text/javascript" src="main.js"></script> -->
     <!-- <link rel="stylesheet" href="main.css"> -->
+    <style>
+
+      #map-container{
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        background-color: lightskyblue;
+        z-index: 1;
+      }
+      #marker-container{
+        width: 50%; /* マーカーの位置を全体に対応 */
+        height: 50%;
+        top:0;
+        left:0;
+        position: absolute; 
+        background-color: rgba(255, 0, 0, 0.1); /* 半透明の背景色（確認用） */
+        z-index: 2;
+      }
+
+    </style>
   </head>
+  
   <body>
-    <div id="mapContainer">
-      <img id='imgMap' src="img/map_tokyo.svg" alt="blankmap">
-    </div>
+    <input type="button" value="DRAW MAP" onclick="drawMap()">
+    <input type="button" value="ZOOM" onclick="clickZoom()">
+    <input type="button" value="MARK" onclick="drawMark()">
+
+    <div id="map-container"></div>
+    <div id="marker-container"></div>
+    <script>
+      // drawMap();
+      // drawMark();
+
+          // const markerContainer = document.getElementById('marker-container');
+          const markerContainer = document.getElementById('marker-container');
+          // const screenWidth = window.innerWidth;
+          // const [width,height] = await getImageSize('./img/checkmark.webp');
+          // console.log(`画像の幅: ${width}px, 高さ: ${height}px`); //434px,676px
+          const img = document.createElement('img');
+          img.src = './img/checkmark.webp';
+          img.alt = 'マーカー';
+          // img.width = screenWidth/20;
+          // img.height = screenWidth/20*height/width;
+          img.width = '50px';
+          img.height = '50px';
+          img.style.position = 'absolute';
+          img.style.left = '50px'; 
+          img.style.top = '50px';
+          // img.style.width = '50px';
+          // img.style.height = '50px';
+          // ---------------
+          //
+          // ---------------
+          // 375:X = 434:676
+          // 434X = 375*676
+          // X = 375*676/434    
+          markerContainer.appendChild(img);
+        // }catch(error){
+        //   console.error(error.message);
+        // }
+      // }
+
+      async function getImageSize(url){
+        return new Promise((resolve, reject) => {
+          const img = new Image(); // 新しい画像要素を作成
+          img.src = url;          // 画像のURLを設定
+          img.onload = () => {
+              // 画像がロードされた後にサイズを取得
+              const width = img.naturalWidth;  // 元の幅
+              const height = img.naturalHeight; // 元の高さ
+              resolve ([width,height]);
+          };
+          img.onerror = () => {
+            reject(new Error('画像を読み込めませんでした。'));
+          };
+        });
+      }
+      function drawMap(){
+        fetch('img/map_tokyo.svg')
+          .then(response => response.text())
+          .then(svg => {
+            document.getElementById('map-container').innerHTML = svg;
+            // const svgElement = document.getElementById('map-container').querySelector('svg');
+            // const rect = svgElement.getBoundingClientRect();
+          });
+      }
+      function clickZoom(){
+        // const screenWidth = window.innerWidth;
+        fetch('img/map_tokyo.svg')
+          .then(response => response.text())
+          .then(svg => {
+            document.getElementById('map-container').innerHTML = svg;
+
+            // SVG要素を取得
+            const svgElement = document.getElementById('map-container').querySelector('svg');
+            const rect = svgElement.getBoundingClientRect();
+
+            // viewBoxを設定してトリミング（x, y, width, height）
+            svgElement.setAttribute('viewBox', `0 0 ${rect.width / 2} ${rect.height / 2}`);
+            svgElement.setAttribute('width', `${rect.width * 2}px`);
+            svgElement.setAttribute('height', `${rect.height * 2}px`);
+            svgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet'); // アスペクト比を維持
+          });
+      }
+    </script>
+
+    <!-- <img src="./img/checkmark.webp" style="width:5%;height:5%;"> -->
+   
   </body>
+
 </html>

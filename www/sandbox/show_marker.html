@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overlay Images</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #main-container {
+            position: relative; /* 子要素を基準に位置指定 */
+            width: 100vw;
+            height: 100vh;
+            background-color: aqua; /* 背景色 */
+            overflow: hidden; /* 必要ならスクロールを防止 */
+        }
+        #main-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* 画面全体に拡大 */
+            height: 100%; /* 画面全体に拡大 */
+             /* 比率を維持して拡大 */
+            /* object-fit: cover; */
+        }
+        #overlay-container {
+            position: absolute;
+            top: 50%; /* 親要素の中央に配置 */
+            left: 50%; /* 親要素の中央に配置 */
+            /* 中央に揃える補正 */
+            transform: translate(-50%, -50%); 
+            width: 150px; /* オーバーレイ画像の幅 */
+            height: 150px; /* オーバーレイ画像の高さ */
+        }
+        #overlay-container img {
+            width: 100%; /* コンテナ内で画像を表示 */
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <h1>Overlay Images</h1>
+    <div id="main-container">
+        <!-- 背景画像 -->
+        <img src="sample.svg" alt="Background">
+
+        <!-- オーバーレイ用のコンテナ -->
+        <div id="overlay-container">
+            <img src="checkmark.webp" alt="Overlay">
+        </div>
+    </div>
+</body>
+</html>
