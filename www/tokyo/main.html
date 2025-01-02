@@ -21,6 +21,8 @@
     <input type="button" value="MARK(10,10)" onclick="drawMark(10,10)">
     <input type="button" value="MAP(115,90)" onclick="drawMap(115,90)">
     <input type="button" value="MARK(115,90)" onclick="drawMark(115,90)">
+    <input type="button" value="REMOVE" onclick="clearMark()">
+    
     <div id="main-container"></div>
     <div id="sub-container"></div>
     <script>
@@ -32,6 +34,16 @@
       let m_cameraX;
       let m_cameraY;
 
+      function clearMark(){
+        const mainElement = document.getElementById('main-container').querySelector('svg');
+        const subElement = document.getElementById('sub-container').querySelector('svg');
+        _clearMark(mainElement);
+        _clearMark(subElement);
+        function _clearMark(ele){
+          const marks = ele.querySelectorAll('.mark');
+          marks.forEach(marks => marks.remove()); // すべて削除        
+        }
+      }
       function drawMap(pointX,pointY){
         _drawMapZoom(pointX,pointY);
         _drawMapAll(pointX,pointY);
@@ -65,7 +77,6 @@
               svgElement.appendChild(rect);
             });
         }
-
         function _drawMapZoom(x,y){
           fetch('img/map_tokyo.svg')
             .then(response => response.text())
@@ -125,12 +136,14 @@
           // circle.setAttribute('stroke-dasharray', '0.5, 0.5')
           circle.setAttribute('fill', 'none');
           circle.setAttribute('stroke', 'red');
+          circle.classList.add('mark');
 
           const circleSmall = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
           circleSmall.setAttribute('cx', x);
           circleSmall.setAttribute('cy', y);
           circleSmall.setAttribute('r', 1*zoomLevel);
           circleSmall.setAttribute('fill', 'red');
+          circleSmall.classList.add('mark');
 
           ele.appendChild(circle);
           ele.appendChild(circleSmall);
