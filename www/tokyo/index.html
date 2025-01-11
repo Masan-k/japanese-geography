@@ -13,20 +13,43 @@
         /* background-color: lightskyblue; */
       }
     </style>
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS -->
+    <script src="js/bootstrap.bundle.min.js"></script>
 
   </head>
   
   <body>
     <label id="gameStatus">gameStatus</label><br>
-    <label id="questionCode">questionCode</label><br>
-    <input type="text" id="inputTarget" placeholder="targetCode"><br>
-    <input type="button" value="OK" onclick="clickOk()">
+    <div class="input-group input-group-sm mb-3">
+      <span class="input-group-text" id="questionCode">XX</span>
+      <input type="text" class="form-control" aria-describedby="questionCode" placeholder="Enter the answer">
+    </div>
+    <input type="checkbox" class="btn-check btn-success" id="checkCode1">
+    <label class="btn btn-outline-success" for="checkCode1">1</label>
+    <input type="checkbox" class="btn-check btn-success" id="checkCode2">
+    <label class="btn btn-outline-success" for="checkCode2">2</label>
+    <input type="checkbox" class="btn-check btn-success" id="checkCode3">
+    <label class="btn btn-outline-success" for="checkCode3">3</label>
+    <input type="checkbox" class="btn-check" id="checkCode4">
+    <label class="btn btn-outline-primary" for="checkCode4">4</label>
+    <input type="checkbox" class="btn-check" id="checkCode5">
+    <label class="btn btn-outline-primary" for="checkCode5">5</label>
+    <input type="checkbox" class="btn-check" id="checkCode6">
+    <label class="btn btn-outline-primary" for="checkCode6">6</label>
+
+    <br>
+
+    <input type="button" class="btn btn-primary" value="PLAY" onclick="clickPlay()">
+    <input type="button" class="btn btn-primary" value="ENTRY" onclick="clickOk()">
     <div id="main-container"></div>
     <div id="sub-container"></div>
     <label id="hint"></label><br>
     <script type="module">
-      import * as question from './question.js';
-      import * as svg from './svg.js';
+      import * as question from './js/question.js';
+      import * as svg from './js/svg.js';
       let m_clickCount=0;
       let m_readyCount = 0;
       let m_targetCode = "1";
@@ -35,6 +58,7 @@
       let request = new XMLHttpRequest(); 
 
       window.clickOk = clickOk;
+      window.clickPlay = clickPlay;
       setParameter();
       request.open('GET', requestURL);
       request.responseType = 'json';
@@ -74,14 +98,23 @@
         }
       }
       function main(){
-        document.getElementById("questionCode").textContent = question.questionCode[m_clickCount];
+        svg.setObserverGame();
+
+        document.getElementById("questionCode").innerText = question.questionCode[m_clickCount];
         svg.draw(question.pos[m_clickCount][0],question.pos[m_clickCount][1]);
         m_clickCount += 1;
-       }
-
+      }
+      function clickPlay(){
+        console.log('click play');
+        svg.drawMapFullMainContainer();
+      }
+      function clickSample(){
+        console.log('call clickSample');
+      }
       function clickOk(){
+
         if(typeof question.pos != 'undefined'){
-          document.getElementById("questionCode").textContent = question.questionCode[m_clickCount];
+          document.getElementById("questionCode").innerText = question.questionCode[m_clickCount];
           svg.draw(question.pos[m_clickCount][0],question.pos[m_clickCount][1]);
           m_clickCount += 1;
         }

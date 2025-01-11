@@ -7,46 +7,46 @@ let m_cameraY;
 let m_observer;
 const mainContainer = document.getElementById('main-container');
 const subContainer = document.getElementById('sub-container');
+const SVG_MAP_FILE_PATH = 'img/map_tokyo.svg'
 
 export function draw(x,y){
   // -----------------------------------------------------------------------
-  // svgを追加されたタイミングでマークをクリア・描画するため、
-  // observerでマークを描画するため、書き込む座標をsetPointで事前に設定する
+  // svgを追加されたタイミングでマークをクリア・描画するのにobserverを利用
+  // observer用に対象座標をsetPoint設定している
   // -----------------------------------------------------------------------
   m_observer.setPointX(x);
   m_observer.setPointY(y);
   drawMap(x,y);
 }
-
-setObserver();
-function setObserver(){
-  m_observer = new MutationObserver((mutationsList) => {
-    for(const mutation of mutationsList){
-      if(mutation.type === "childList"){
-        const addedNodes = Array.from(mutation.addedNodes);
-        addedNodes.forEach((node) => {
-          if(node.nodeName === "svg"){
-            if(addedNodes[0].parentElement.childNodes[0].parentNode.id === 'main-container'){
-              clearMark(mainContainer);
-              drawMark(m_observer.pointX,m_observer.pointY,mainContainer);
-              
-            }else if(addedNodes[0].parentElement.childNodes[0].parentNode.id === 'sub-container'){
-              clearMark(subContainer);
-              drawMark(m_observer.pointX,m_observer.pointY,subContainer,4);
+export function setObserverGame(){
+  setObserver();
+  function setObserver(){
+    m_observer = new MutationObserver((mutationsList) => {
+      for(const mutation of mutationsList){
+        if(mutation.type === "childList"){
+          const addedNodes = Array.from(mutation.addedNodes);
+          addedNodes.forEach((node) => {
+            if(node.nodeName === "svg"){
+              if(addedNodes[0].parentElement.childNodes[0].parentNode.id === 'main-container'){
+                clearMark(mainContainer);
+                drawMark(m_observer.pointX,m_observer.pointY,mainContainer);
+                
+              }else if(addedNodes[0].parentElement.childNodes[0].parentNode.id === 'sub-container'){
+                clearMark(subContainer);
+                drawMark(m_observer.pointX,m_observer.pointY,subContainer,4);
+              }
             }
-          }
-        });
+          });
+        }
       }
-    }
-  })
-  m_observer.observe(mainContainer, {childList:true});
-  m_observer.observe(subContainer, {childList:true});
+    })
+    m_observer.observe(mainContainer, {childList:true});
+    m_observer.observe(subContainer, {childList:true});
 
-  m_observer.setPointX = function (x) {this.pointX = x;};
-  m_observer.setPointY = function (y) {this.pointY = y;};
+    m_observer.setPointX = function (x) {this.pointX = x;};
+    m_observer.setPointY = function (y) {this.pointY = y;};
+  }
 }
-
-
 function clearMark(container){
   if(container.querySelector("svg")){
     const marks = container.querySelector("svg").querySelectorAll('.mark'); 
@@ -76,25 +76,29 @@ function drawMark(x,y,ele,zoomLevel = 1){
   svgEle.appendChild(circleSmall);
 }
 
-function drawMap(pointX,pointY){
-  const SVG_MAP_FILE_PATH = 'img/map_tokyo.svg'
-  _drawMapZoom(pointX,pointY);
-  _drawMapAll(pointX,pointY);
+export function drawMapFullMainContainer(){
+  drawMapAll(0,0,'main-container');
+}
 
-  function _drawMapAll(x,y){
-    fetch(SVG_MAP_FILE_PATH)
-      .then(response => response.text())
-      .then(svg => {
+function drawMapAll(x,y,mapId){
+  fetch(SVG_MAP_FILE_PATH)
+    .then(response => response.text())
+    .then(svg => {
 
-        document.getElementById('sub-container').innerHTML = svg;
-        const svgElement = document.getElementById('sub-container').querySelector('svg');
-        // viewBoxを設定してトリミング（x, y, width, height）
-        svgElement.setAttribute('viewBox', `0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`);
+      document.getElementById(mapId).innerHTML = svg;
+      const svgElement = document.getElementById(mapId).querySelector('svg');
+      // viewBoxを設定してトリミング（x, y, width, height）
+      svgElement.setAttribute('viewBox', `0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`);
+      if(mapId === 'sub-container'){
         svgElement.setAttribute('width', `50%`);
         svgElement.setAttribute('height', `50%`);
-        svgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet'); // アスペクト比を維持
+      }else if(mapId === 'main-container'){
+        svgElement.setAttribute('width', `100%`);
+        svgElement.setAttribute('height', `100%`);
+      }
+      svgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet'); // アスペクト比を維持
 
-        // 属性を設定
+      if(mapId === 'sub-container'){
         const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         rect.setAttribute('x', m_cameraX);
         rect.setAttribute('y', m_cameraY);
@@ -103,11 +107,16 @@ function drawMap(pointX,pointY){
         rect.setAttribute('fill', 'none');
         rect.setAttribute('stroke', 'red');
         rect.setAttribute('stroke-width', '0.5');
-
         svgElement.appendChild(rect);
-      });
-  }
-  function _drawMapZoom(x,y){
+      }
+    });
+}
+
+function drawMap(pointX,pointY){
+  _drawMapZoom(pointX,pointY);
+  drawMapAll(pointX,pointY,'sub-container');
+
+ function _drawMapZoom(x,y){
     fetch(SVG_MAP_FILE_PATH)
       .then(response => response.text())
       .then(svg => {
