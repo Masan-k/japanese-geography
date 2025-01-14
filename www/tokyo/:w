@@ -16,12 +16,11 @@
     <div class="mx-auto d-block" style="width:90%;">
       <h1 class="text-center mt-2" id="gameStatus">gameStatus</h1>
       <div class="input-group">
-        <span class="input-group-text" id="questionCode" style="width:15%;">XX</span>
+        <span class="input-group-text" id="questionCode">XX</span>
         <input type="text" class="form-control" aria-describedby="questionCode" placeholder="Enter the answer">
       </div>
     </div>
-    
-    <div class="text-center mt-3" id="select-container">
+    <div class="text-center mt-3" style="">
       <div class="btn-group" role="group" style="width:95%;">
         <input type="radio" class="btn-check" name="btnradio" id="radioEasy1" data-index="easy1">
         <label class="btn btn-outline-primary" for="radioEasy1">EASY I</label>
@@ -50,27 +49,25 @@
           <input type="checkbox" class="btn-check" id="checkCode6" name="selectCode">
           <label class="btn btn-outline-primary" for="checkCode6">6</label>
         </div>
-        <input type="button" class="btn btn-primary" value="START" id="buttonStart" onclick="clickStart()">
-        <input type="button" class="btn btn-primary" value="TEST" id="buttonTest" onclick="clickTest()">
       </div>
     </div>
 
     <div class="mt-2 mb-2 text-center">
+      <input type="button" class="btn btn-primary" value="START" id="buttonStart" onclick="clickStart()">
       <input type="button" class="btn btn-primary" value="SUBMIT" id="buttonSubmit" style="display:none;" onclick="clickSubmit()">
+      <input type="button" class="btn btn-primary" value="TEST" id="buttonTest" onclick="clickTest()">
     </div>
 
     <div id="main-container"></div>
     <div id="sub-container"></div>
-    <div id="progress-container" class='mt-3 progress' role='progressbar' aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-       <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 50%">50%</div>
-    </div>
     <label id="hint"></label><br>
     <script type="module">
-      const DEFAULT_MODE = 'easy2';
       import * as question from './js/question.js';
       import * as svg from './js/svg.js';
       let m_clickCount = 0;
+      let m_readyCount = 0;
       let m_jsonData;
+      const DEFAULT_MODE = 'easy2';
       // 初期選択のTARGET_CODEは対応しない
       // 理由：マークをマップ書き込み後に処理するのにobserverが必要で
       //       実装に時間がかかるため
@@ -95,54 +92,49 @@
         window.clickStart = clickStart;
         window.clickTest = clickTest;
 
-        eleRadios.forEach(radio => {
-          if(DEFAULT_MODE === radio.dataset.index){
-            radio.checked = true;
-          }
-        }); 
-
         request.open('GET', REQUEST_URL);
         request.responseType = 'json';
         request.send();
         request.onload = function (){
           m_jsonData = request.response;
+          setParameter();
           setStatus('select');
+        }
+
+        function setParameter(){
+          let param = location.search.split('&');
+          let mode;
+          let groupCode;
+          //const eleCheckboxCodes = document.querySelectorAll('input[name="selectCode"]');
+          const eleRadios = document.querySelectorAll('input[name="btnradio"]');
+
+          if(param.length === 1){
+            console.log('check1');
+            console.log("location.search.split('&')");
+            console.log(location.search.split('&'));
+            mode = param[0].split('=')[1];
+            console.log('mode');
+            console.log(mode);
+            //groupCode = param[1].split('=')[1];
+          }else{
+            console.log('check2');
+            mode = DEFAULT_MODE;
+            //groupCode = DEFAULT_TARGET_CODE;
+          }
+
+          eleRadios.forEach(radio => {
+            if(mode === radio.dataset.index){
+              radio.checked = true;
+            }
+          }); 
         }
       }  // init end
 
 
-      function setStatus(gameStatus){
-        if(gameStatus === 'select'){
+      function setStatus(mode){
+        if(mode === 'select'){
           document.getElementById("gameStatus").textContent = 'Click START..';
           svg.drawMapFullMainContainer();
-
-        }else if(gameStatus === 'mainInit'){
-          question.setData(m_jsonData,getSelectedMode(),getSelectedTargetCodes());
-
-          document.getElementById("gameStatus").textContent =  '...';
-          document.getElementById("questionCode").innerText = question.code[m_clickCount];
-          document.getElementById("buttonSubmit").style.display = "inline-block";
-          document.getElementById("buttonStart").style.display = "none";
-          document.getElementById("select-container").style.display = "none";
-          svg.setObserverGame();
-          svg.draw(question.pos[m_clickCount][0],question.pos[m_clickCount][1]);
-          m_clickCount += 1;
-          if(getSelectedMode() === 'easy1' || getSelectedMode() === 'easy2'){
-            //setHint
-            for (let index in question.answer) {
-              if(question.kana[index].length > 0){
-                document.getElementById('hint').textContent += question.answer[index] + "(" + question.kana[index] +")/";
-              }else{
-                document.getElementById('hint').textContent += question.answer[index] + "/";
-              }
-            }
-          }
-        }else if(gameStatus === 'main'){
-          console.log('call main');
-          let intervalId = setInterval(() => {
-            console.log('call set interval');
-             
-          },1000);
         }
       }
       function getSelectedMode(){
@@ -173,17 +165,32 @@
         console.log('call clickSample');
       }
       function clickTest(){
-        console.log('call clickTest');
-        
-        //svg.drawMarkToGroupCode(m_jsonData,getSelectedTargetCodes(),getSelectedMode());
+        svg.drawMarkToGroupCode(m_jsonData,getSelectedTargetCodes(),getSelectedMode());
       }
       function clickStart(){
-        setStatus('mainInit');
-        setStatus('main');
+        question.setData(m_jsonData,getSelectedMode(),getSelectedTargetCodes());
+        main();
+        function main(){
+          document.getElementById("gameStatus").textContent =  '...';
+          svg.setObserverGame();
+          document.getElementById("questionCode").innerText = question.questionCode[m_clickCount];
+          svg.draw(question.pos[m_clickCount][0],question.pos[m_clickCount][1]);
+          document.getElementById("buttonSubmit").style.display = "inline-block";
+          document.getElementById("buttonStart").style.display = "none";
+        }
+        function setHint(){
+          for (let index in question.answer) {
+            if(question.kana[index].length > 0){
+              document.getElementById('hint').textContent += question.answer[index] + "(" + question.kana[index] +")/";
+            }else{
+              document.getElementById('hint').textContent += question.answer[index] + "/";
+            }
+          }
+        }
       }
       function clickSubmit(){
         if(typeof question.pos != 'undefined'){
-          document.getElementById("questionCode").innerText = question.code[m_clickCount];
+          document.getElementById("questionCode").innerText = question.questionCode[m_clickCount];
           svg.draw(question.pos[m_clickCount][0],question.pos[m_clickCount][1]);
           m_clickCount += 1;
         }

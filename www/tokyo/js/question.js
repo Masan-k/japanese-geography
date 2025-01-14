@@ -1,60 +1,63 @@
 ﻿
-export let questionCode;
+export let code;
 export let answer;
 export let pos;
 export let kana;
 
-export function setData(jsonData,m_mode,m_targetCode){
-  let workQuestionCode = [];
+export function setData(jsonData,mode,groupCodes){
+  let workCode = [];
   let workAnswer = [];
   let workPos = [];
   let workKana = [];
-  let randomQuestionCode = [];
+
+  let randomCode = [];
   let randomAnswer = [];
   let randomPos = [];
   let randomKana = [];
 
   for(let rec of jsonData){
-    if(rec.group === m_targetCode || m_targetCode ==='all'){
-      workQuestionCode.push(rec.code);
-      workAnswer.push(rec.name);
-      workPos.push(rec.pos);
-      workKana.push(rec.kana);
-    }
+    groupCodes.forEach(groupCode =>{
+      if(rec.group === groupCode){
+        workCode.push(rec.code);
+        workAnswer.push(rec.name);
+        workPos.push(rec.pos);
+        workKana.push(rec.kana);
+      }
+    });
   }
-  if(m_mode === 'veryEasy'){
-    randomQuestionCode = workQuestionCode;
+  if(mode === 'easy1'){
+    randomCode = workCode;
     randomAnswer = workAnswer;
     randomPos = workPos;
     randomKana = workKana;
 
   }else{
-    while(randomQuestionCode.length < workQuestionCode.length){
-      for(let i in workQuestionCode){
-        let trgIndex = getRandom(0 ,workQuestionCode.length - i - 1);
-        randomQuestionCode.push(workQuestionCode[trgIndex]);
-        randomAnswer.push(workAnswer[trgIndex]);
-        randomPos.push(workPos[trgIndex]);
-        randomKana.push(workKana[trgIndex]);
+    const questionCount = workCode.length;
+    while(randomCode.length < questionCount){
+      let trgIndex = getRandom(0 ,workCode.length-1);
+      
+      randomCode.push(workCode[trgIndex]);
+      randomAnswer.push(workAnswer[trgIndex]);
+      randomPos.push(workPos[trgIndex]);
+      randomKana.push(workKana[trgIndex]);
 
-        workQuestionCode.splice(trgIndex, 1);
-        workAnswer.splice(trgIndex, 1);
-        workPos.splice(trgIndex, 1);
-        workKana.splice(trgIndex, 1);
-      }
+      workCode.splice(trgIndex, 1);
+      workAnswer.splice(trgIndex, 1);
+      workPos.splice(trgIndex, 1);
+      workKana.splice(trgIndex, 1);
     }
   }
 
-  if(m_mode === 'veryEasy' || m_mode === 'easy'){
-    questionCode = workQuestionCode.slice();
+  if(mode === 'easy1'){
+    code = workCode.slice();
     answer = workAnswer.slice();
     pos = workPos.slice();
     kana = workKana.slice();
-
   }else{
-    questionCode = randomQuestionCode;
-    answer = randomAnswer;
-    pos = randomPos;
+    code = randomCode.slice();
+    answer = randomAnswer.slice();
+    pos = randomPos.slice();
+    kana = randomKana.slice();
   } 
 
   function getRandom(min, max) {
