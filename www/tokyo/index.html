@@ -9,7 +9,6 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap JS -->
     <script src="js/bootstrap.bundle.min.js"></script>
-
   </head>
   
   <body>
@@ -17,10 +16,21 @@
       <h1 class="text-center mt-2" id="gameStatus">gameStatus</h1>
       <div class="input-group">
         <span class="input-group-text" id="questionCode" style="width:15%;">XX</span>
-        <input type="text" class="form-control" aria-describedby="questionCode" placeholder="Enter the answer">
+        <input id="entryAnswer" type="text" class="form-control" aria-describedby="questionCode" placeholder="Enter the answer">
+        <input type="button" class="btn btn-primary" value="SUBMIT" id="buttonSubmit" style="display:none;" onclick="clickSubmit()">
       </div>
     </div>
-    
+    <div class="position-relative d-inline-block w-100">
+      <div id="progress-container" class='mt-3 mb-3 progress mx-auto inline-block' role='progressbar' aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:90%;">
+        <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" style="width:100%">20sec</div>
+      </div>
+      <span id="resultLabel" class="position-absolute translate-middle top-50 start-50 px-2 py-1 rounded alert" role="alert"></span>
+    </div>
+   <!--
+    <div class="position-relative d-inline-block w-100">
+      <div id="main-container" class="img-fluid"></div>
+   --> 
+
     <div class="text-center mt-3" id="select-container">
       <div class="btn-group" role="group" style="width:95%;">
         <input type="radio" class="btn-check" name="btnradio" id="radioEasy1" data-index="easy1">
@@ -33,7 +43,7 @@
         <label class="btn btn-outline-primary" for="radioHard">HARD</label>
       </div>
 
-      <div class="mt-2">
+      <div class="mt-2 mb-2">
         <div class="btn-group" role="group">
           <input type="checkbox" class="btn-check btn-success" id="checkCode1" name="selectCode">
           <label class="btn btn-outline-success" for="checkCode1">1</label>
@@ -51,23 +61,33 @@
           <label class="btn btn-outline-primary" for="checkCode6">6</label>
         </div>
         <input type="button" class="btn btn-primary" value="START" id="buttonStart" onclick="clickStart()">
-        <input type="button" class="btn btn-primary" value="TEST" id="buttonTest" onclick="clickTest()">
       </div>
     </div>
 
-    <div class="mt-2 mb-2 text-center">
-      <input type="button" class="btn btn-primary" value="SUBMIT" id="buttonSubmit" style="display:none;" onclick="clickSubmit()">
+    <!--
+    <div class="position-relative d-inline-block w-100">
+      <div id="main-container" class="img-fluid"></div>
+      <span class="position-absolute translate-middle top-50 start-50 px-2 py-1 rounded alert alert-primary" role="alert">
+        result label 
+      </span>
     </div>
-
+    -->
     <div id="main-container"></div>
-    <div id="sub-container"></div>
-    <div id="progress-container" class='mt-3 progress' role='progressbar' aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-       <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 50%">50%</div>
+
+    <div class="container mt-2">
+      <div class="row">
+        <div class="col-6 border p-0">
+          <div class="container d-flex align-items-start justify-content-center p-2" id="sub-container"></div>
+        </div>
+        <div class="col-6 border p-2">
+          <label id="hint"></label>
+        </div>
+      </div>
     </div>
-    <label id="hint"></label><br>
+    
     <script type="module">
       const DEFAULT_MODE = 'easy2';
-      const TIME_LIMIT = 15;
+      const TIME_LIMIT = 20;
       const GREAT_LIMIT = 5;
       const GOOD_LIMIT = 10;
 
@@ -78,12 +98,16 @@
       let m_jsonData;
       let m_gameStartTime;
       let m_answerStartTime; 
+      let m_intervalId;
+      let m_gameScore;
 
       // 初期選択のTARGET_CODEは対応しない
       // 理由：マークをマップ書き込み後に処理するのにobserverが必要で
       //       実装に時間がかかるため
       // const DEFAULT_TARGET_CODE = 'checkCode4';
+
       init();
+
       function init(){
         const REQUEST_URL = './contents.json';
         const eleCheckboxCodes = document.querySelectorAll('input[name="selectCode"]');
@@ -91,22 +115,26 @@
         let request = new XMLHttpRequest(); 
 
         window.clickSubmit = clickSubmit;
-        window.clickPlay = clickPlay;
         window.clickStart = clickStart;
         window.clickTest = clickTest;
 
         eleCheckboxCodes.forEach(checkbox => {
           checkbox.addEventListener('change', function(){
-            svg.drawMarkToGroupCode(m_jsonData,getSelectedTargetCodes(),getSelectedMode());
+            svg.drawMarkToGroupCode(m_jsonData, getSelectedTargetCodes(), getSelectedMode());
           });
         });
-
 
         eleRadios.forEach(radio => {
           if(DEFAULT_MODE === radio.dataset.index){
             radio.checked = true;
           }
         }); 
+
+        document.addEventListener("keydown", function(event) {
+          if (event.key === "Enter"){
+            clickSubmit();
+          }
+        });
 
         request.open('GET', REQUEST_URL);
         request.responseType = 'json';
@@ -120,7 +148,8 @@
       function updateProgress(time){
         const progressBar = document.getElementById('progress');
         let parsent = 100-(time*100/TIME_LIMIT).toFixed(0);
-        let sec = TIME_LIMIT-time.toFixed(0);
+        let sec = TIME_LIMIT - time.toFixed(0);
+
         progressBar.style.width = parsent + '%';
         progressBar.textContent = sec + 'sec';
         progressBar.setAttribute('aria-valuenow',parsent);
@@ -152,6 +181,8 @@
           svg.drawMapFullMainContainer();
 
         }else if(gameStatus === 'mainInit'){
+          let eleEntryAnswer = document.getElementById('entryAnswer');
+
           question.setData(m_jsonData,getSelectedMode(),getSelectedTargetCodes());
 
           document.getElementById("gameStatus").textContent =  '...';
@@ -159,15 +190,17 @@
           document.getElementById("buttonSubmit").style.display = "inline-block";
           document.getElementById("buttonStart").style.display = "none";
           document.getElementById("select-container").style.display = "none";
+
           svg.setObserverGame();
           svg.draw(question.pos[m_clickCount][0],question.pos[m_clickCount][1]);
           m_clickCount += 1;
 
+          m_gameScore = 0;
           m_gameStartTime = Date.now();
           m_answerStartTime = Date.now();
+          eleEntryAnswer.focus();
 
           if(getSelectedMode() === 'easy1' || getSelectedMode() === 'easy2'){
-            //setHint
             for (let index in question.answer) {
               if(question.kana[index].length > 0){
                 document.getElementById('hint').textContent += question.answer[index] + "(" + question.kana[index] +")/";
@@ -178,13 +211,20 @@
           }
 
         }else if(gameStatus === 'main'){
-          console.log('call main');
-          let intervalId = setInterval(() => {
+          m_intervalId = setInterval(() => {
             const eleGameStatus = document.getElementById('gameStatus')
-            eleGameStatus.textContent = ((Date.now() - m_gameStartTime) / 1000).toFixed(1);
+            let eleResultLabel = document.getElementById('resultLabel');
+            eleGameStatus.textContent = m_gameScore + ' : ' + ((Date.now() - m_gameStartTime) / 1000).toFixed(0);
             let elapsedTime = (Date.now() - m_answerStartTime) / 1000;
-            updateProgress(elapsedTime);
-          },100);
+
+            if(TIME_LIMIT < elapsedTime){
+              checkEntry();
+              setNextQuestion();
+            }else{
+              eleResultLabel.style.opacity -= 0.1;
+              updateProgress(elapsedTime);
+            }
+          },200);
         }
       }
       function getSelectedMode(){
@@ -196,6 +236,7 @@
         }
         return null;
       } 
+
       function getSelectedTargetCodes(){
         const eleCheckboxCodes = document.querySelectorAll('input[name="selectCode"]');
         let selectGroupCodes = [];
@@ -208,41 +249,128 @@
         return selectGroupCodes;
       }
 
-      function clickPlay(){
-        console.log('click play');
-      }
-      function clickSample(){
-        console.log('call clickSample');
-      }
+      let myInterval = null;
       function clickTest(){
-        /*
-        console.log('call clickTest');
-        const progressBar = document.getElementById('progress');
-        if(progressBar.classList.contains('bg-warning')){
-          progressBar.classList.remove('bg-warning');
-          progressBar.classList.add('bg-danger');
-        }else if(progressBar.classList.contains('bg-danger')){
-          progressBar.classList.remove('bg-danger');
+        const eleResult = document.getElementById('resultLabel');
+        eleResult.style.opacity = 1;
+        console.log('myInterval');
+        console.log(myInterval);
+        if(myInterval === null){
+          //eleResult.style.display = 'block';
+          console.log('call setInterval');
+          myInterval = setInterval(() => {
+            console.log('eleResult.style.opacity=>'+ eleResult.style.opacity);
+            eleResult.style.opacity -= 0.01;
+          },100);
         }else{
-          progressBar.classList.add('bg-warning');
+          clearInterval(myInterval);
+          eleResult.style.opacity = 1;
+          console.log('clear Interval');
         }
-        */
       }
-
       function clickStart(){
         if(getSelectedTargetCodes().length === 0){
           alert("Please select a number.");
-
         }else{
           setStatus('mainInit');
           setStatus('main');
         }
       }
-      function clickSubmit(){
-        if(typeof question.pos != 'undefined'){
+
+      function saveScore(){
+        const eleGameStatus = document.getElementById('gameStatus')
+        let nowDate = new Date();
+        let year = nowDate.getFullYear();
+        let month = ('00' + (nowDate.getMonth()+1)).slice(-2);
+        let day = ('00' + nowDate.getDate()).slice(-2);
+        let hour = ('00' + nowDate.getHours()).slice(-2);
+        let minute = ('00' + nowDate.getMinutes()).slice(-2);
+        let second = ('00' + nowDate.getSeconds()).slice(-2);
+
+        let time = (Date.now() - m_gameStartTime) / 1000;
+        let rank;
+        let maxScore = question.code.length * 2;
+        if(m_gameScore >= maxScore * 8/9){rank = 'AAA';}
+        else if(m_gameScore >= maxScore * 7/9){rank = 'AA';}
+        else if(m_gameScore >= maxScore * 6/9){rank = 'A';}
+        else if(m_gameScore >= maxScore * 5/9){rank = 'B';}
+        else if(m_gameScore >= maxScore * 4/9){rank = 'C';}
+        else if(m_gameScore >= maxScore * 3/9){rank = 'D';}
+        else if(m_gameScore >= maxScore * 2/9){rank = 'E';}
+        else{rank = 'F';}
+
+        localStorage.setItem('loopeeTokyo' + ',' + getSelectedMode() + ',' + getSelectedTargetCodes().join("") + ',' + year + month + day + hour + minute + second,m_gameScore + ',' + rank + ',' + time);
+        eleGameStatus.innerText = eleGameStatus.innerText + rank; 
+      }
+
+      function setNextQuestion(){
+        if(m_clickCount >= question.code.length){
+          const eleGameStatus = document.getElementById('gameStatus')
+          clearInterval(m_intervalId);
+          eleGameStatus.innerText = 'CLEAR!! --> ';
+          saveScore();
+
+        }else{
+          let eleEntryAnswer = document.getElementById('entryAnswer');
+          let eleResultLabel = document.getElementById('resultLabel');
           document.getElementById("questionCode").innerText = question.code[m_clickCount];
           svg.draw(question.pos[m_clickCount][0],question.pos[m_clickCount][1]);
           m_clickCount += 1;
+          m_answerStartTime = Date.now();
+          eleEntryAnswer.value = '';
+          eleResultLabel.style.opacity = 1;
+
+        }
+      }
+
+      
+      function checkEntry(){
+        function resetResultLabel(){
+          let ele = document.getElementById('resultLabel');
+          if(ele.classList.contains('alert-primary')){
+             ele.classList.remove('alert-primary');
+          }
+          if(ele.classList.contains('alert-warning')){
+             ele.classList.remove('alert-warning');
+          }
+          if(ele.classList.contains('alert-danger')){
+             ele.classList.remove('alert-danger');
+          }
+        }
+
+        let eleEntryAnswer = document.getElementById('entryAnswer');
+        let eleResultLabel = document.getElementById('resultLabel');
+
+        if(question.answer[m_clickCount-1] === eleEntryAnswer.value){
+          let elapsedTime = (Date.now() - m_answerStartTime) / 1000;
+          let plusScore = 0;
+
+          resetResultLabel()
+          if(GREAT_LIMIT >= elapsedTime){
+            eleResultLabel.textContent = 'GREAT';
+            eleResultLabel.classList.add('alert-primary');
+            plusScore = 2;
+          }else if(GOOD_LIMIT >= elapsedTime){
+            eleResultLabel.textContent = 'GOOD'; 
+            eleResultLabel.classList.add('alert-warning');
+            plusScore = 1;
+          }else{
+            eleResultLabel.textContent = 'BAD'; 
+            eleResultLabel.classList.add('alert-danger');
+          }
+          m_gameScore += plusScore;
+          return true;
+        }else{
+          console.log('NG') 
+          eleEntryAnswer.value = '';
+          return false;
+        }
+      }
+      function clickSubmit(){
+        if(typeof question.pos != 'undefined'){
+          if(checkEntry()){
+            setNextQuestion();
+          }
         }
       }
     </script>

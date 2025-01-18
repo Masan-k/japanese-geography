@@ -101,8 +101,8 @@ function drawMapAll(x,y,mapId){
       // viewBoxを設定してトリミング（x, y, width, height）
       svgElement.setAttribute('viewBox', `0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`);
       if(mapId === 'sub-container'){
-        svgElement.setAttribute('width', `50%`);
-        svgElement.setAttribute('height', `50%`);
+        svgElement.setAttribute('width', `100%`);
+        svgElement.setAttribute('height', `100%`);
       }else if(mapId === 'main-container'){
         svgElement.setAttribute('width', `100%`);
         svgElement.setAttribute('height', `100%`);
