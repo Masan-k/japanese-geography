@@ -18,9 +18,14 @@ export function draw(x,y){
   m_observer.setPointY(y);
   drawMap(x,y);
 }
-export function  drawMarkToGroupCode(jsonData,groupCodes,mode){
+
+export function disconnect(){
+  m_observer.disconnect();
+}
+
+export function drawMarkToGroupCode(jsonData,groupCodes,mode){
   clearMark(mainContainer);
-  for(let rec of jsonData){
+  for(let rec of jsonData){ 
     groupCodes.forEach(function(groupCode){
       if(groupCode === rec.group){
         drawMark(rec.pos[0],rec.pos[1],mainContainer);
@@ -88,6 +93,7 @@ function drawMark(x,y,ele,zoomLevel = 1){
 }
 
 export function drawMapFullMainContainer(){
+  clearMark(mainContainer);
   drawMapAll(0,0,'main-container');
 }
 
