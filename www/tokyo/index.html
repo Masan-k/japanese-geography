@@ -16,7 +16,7 @@
       <h1 class="text-center mt-2" id="gameStatus">gameStatus</h1>
       <div class="input-group">
         <span class="input-group-text" id="questionCode" style="width:15%;">XX</span>
-        <input id="entryAnswer" type="text" class="form-control" aria-describedby="questionCode" placeholder="Enter the answer">
+        <input id="entryAnswer" type="text" class="form-control" aria-describedby="questionCode" placeholder="Enter the answer" autocomplete="off">
         <input type="button" class="btn btn-primary" value="START" id="buttonStart" onclick="clickStart()">
         <input type="button" class="btn btn-primary" value="SUBMIT" id="buttonSubmit" onclick="clickSubmit()">
         <input type="button" class="btn btn-secondary" value="MENU" id="buttonMenu" onclick="clickMenu()">
@@ -64,10 +64,10 @@
     <div id="main-container"></div>
     <div class="container mt-2">
       <div class="row">
-        <div class="col-6 border p-0">
+        <div id='left-container' class="col-6 p-0">
           <div class="container d-flex align-items-start justify-content-center p-2" id="sub-container"></div>
         </div>
-        <div class="col-6 border p-2">
+        <div id='right-container' class="col-6 p-2">
           <input type="button" class="btn btn-primary" value="Prev" id="buttonPrevious" onclick="clickPrevious()">
           <input type="button" class="btn btn-primary float-end" value="Next" id="buttonNext" onclick="clickNext()">  
           <label id="hint"></label>
@@ -122,11 +122,11 @@
           }
         }); 
 
-        document.addEventListener("keydown", function(event) {
-          if (event.key === "Enter"){
-            clickSubmit();
-          }
-        });
+        // document.addEventListener("keydown", function(event) {
+        //   if (event.key === "Enter"){
+        //     clickSubmit();
+        //   }
+        // });
 
         request.open('GET', REQUEST_URL);
         request.responseType = 'json';
@@ -180,8 +180,12 @@
           const eleNext = document.getElementById('buttonNext');
           const elePrevious = document.getElementById('buttonPrevious');
 
-          svg.drawMapFullMainContainer();
+          const eleLeft = document.getElementById('left-container');
+          const eleRight = document.getElementById('right-container');
 
+          resetResultLabel()
+          svg.drawMapFullMainContainer();
+          
           if(m_intervalId != null){ 
             clearInterval(m_intervalId);
           }
@@ -199,6 +203,9 @@
           eleNext.classList.add('d-none');
           elePrevious.classList.add('d-none');
 
+          eleLeft.classList.remove('border');
+          eleRight.classList.remove('border');
+          
         }else if(gameStatus === 'mainInit'){
           const eleEntryAnswer = document.getElementById('entryAnswer');
           const eleSubmit = document.getElementById('buttonSubmit');
@@ -209,12 +216,19 @@
           const eleCode = document.getElementById("questionCode");
           const eleStart = document.getElementById("buttonStart");
           const eleHint = document.getElementById('hint');
-
+          const eleLeft = document.getElementById('left-container');
+          const eleRight = document.getElementById('right-container');
+          
+          resetResultLabel()
           m_clickCount = 0;
           m_gameScore = 0;
           m_gameStartTime = Date.now();
           m_answerStartTime = Date.now();
           question.setData(m_jsonData,getSelectedMode(),getSelectedTargetCodes());
+
+          eleEntryAnswer.addEventListener('compositionend', (e) => {
+            if(checkEntry()){setNextQuestion();}
+          });
 
           eleSubmit.value = 'SUBMIT';
           eleEntryAnswer.value = '';
@@ -228,6 +242,9 @@
           eleStart.style.display = "none";
           eleSelect.style.display = "none";
 
+          eleLeft.classList.add('border');
+          eleRight.classList.add('border');
+          
           svg.setObserverGame();
           svg.draw(question.pos[m_clickCount][0],question.pos[m_clickCount][1]);
           m_clickCount += 1;
@@ -251,7 +268,7 @@
             let elapsedTime = (Date.now() - m_answerStartTime) / 1000;
 
             if(TIME_LIMIT < elapsedTime){
-              checkEntry();
+              checkEntry(true);
               eleResultLabel.textContent += question.answer[m_clickCount-1];
               setNextQuestion();
 
@@ -384,25 +401,25 @@
         }
       }
 
-      function checkEntry(){
-        function resetResultLabel(){
-          let ele = document.getElementById('resultLabel');
-          eleResultLabel.style.opacity = 1;
-          if(ele.classList.contains('alert-primary')){
-             ele.classList.remove('alert-primary');
-          }
-          if(ele.classList.contains('alert-warning')){
-             ele.classList.remove('alert-warning');
-          }
-          if(ele.classList.contains('alert-danger')){
-             ele.classList.remove('alert-danger');
-          }
+      function resetResultLabel(){
+        let ele = document.getElementById('resultLabel');
+        ele.style.opacity = 1;
+        ele.textContent = '';
+        if(ele.classList.contains('alert-primary')){
+            ele.classList.remove('alert-primary');
         }
-
+        if(ele.classList.contains('alert-warning')){
+            ele.classList.remove('alert-warning');
+        }
+        if(ele.classList.contains('alert-danger')){
+            ele.classList.remove('alert-danger');
+        }
+      }
+      function checkEntry(isTimeOver=false){
         let eleEntryAnswer = document.getElementById('entryAnswer');
         let eleResultLabel = document.getElementById('resultLabel');
 
-        resetResultLabel()
+        resetResultLabel();
         if(question.answer[m_clickCount-1] === eleEntryAnswer.value){
           let elapsedTime = (Date.now() - m_answerStartTime) / 1000;
           let plusScore = 0;
@@ -423,11 +440,12 @@
           return true;
 
         }else{
-          eleResultLabel.classList.add('alert-danger');
-          eleResultLabel.textContent = 'NG:' + eleEntryAnswer.value;
-          
-          eleEntryAnswer.value = '';
-          return false;
+          if(isTimeOver){
+            eleResultLabel.classList.add('alert-danger');
+            eleResultLabel.textContent = 'NG:' + eleEntryAnswer.value;
+            eleEntryAnswer.value = '';
+            return false;
+          }
         }
       }
       function clickSubmit(){
@@ -437,7 +455,7 @@
             setStatus('mainInit');
             setStatus('main');
           }else{
-            if(checkEntry()){
+            if(checkEntry(true)){
               setNextQuestion();
             }
           }
