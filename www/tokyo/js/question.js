@@ -25,7 +25,7 @@ export function setData(jsonData,mode,groupCodes){
       }
     });
   }
-  if(mode === 'easy1'){
+  if(mode === 'easy1' || mode === 'check'){
     randomCode = workCode;
     randomAnswer = workAnswer;
     randomPos = workPos;
@@ -48,17 +48,18 @@ export function setData(jsonData,mode,groupCodes){
     }
   }
 
-  if(mode === 'easy1'){
+  if(mode === 'easy1' || mode === 'check'){
     code = workCode.slice();
     answer = workAnswer.slice();
     pos = workPos.slice();
     kana = workKana.slice();
+    
   }else{
     code = randomCode.slice();
     answer = randomAnswer.slice();
     pos = randomPos.slice();
     kana = randomKana.slice();
-  } 
+  }
 
   function getRandom(min, max) {
     let range = max - min + 1;

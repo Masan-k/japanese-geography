@@ -31,14 +31,14 @@
 
     <div class="text-center mt-0" id="select-container">
       <div class="btn-group" role="group" style="width:95%;">
+        <input type="radio" class="btn-check"  name="btnradio" id="radioCheck" data-index="check">
+        <label class="btn btn-outline-primary" for="radioCheck">CHECK</label>
         <input type="radio" class="btn-check" name="btnradio" id="radioEasy1" data-index="easy1">
         <label class="btn btn-outline-primary" for="radioEasy1">EASY I</label>
         <input type="radio" class="btn-check" name="btnradio" id="radioEasy2" data-index="easy2">
         <label class="btn btn-outline-primary" for="radioEasy2">EASY II</label>
         <input type="radio" class="btn-check" name="btnradio" id="radioNormal" data-index="normal">
         <label class="btn btn-outline-primary" for="radioNormal">NORMAL</label>
-        <input type="radio" class="btn-check"  name="btnradio" id="radioHard" data-index="hard">
-        <label class="btn btn-outline-primary" for="radioHard">HARD</label>
       </div>
 
       <div class="mt-2 mb-2">
@@ -68,13 +68,15 @@
           <div class="container d-flex align-items-start justify-content-center p-2" id="sub-container"></div>
         </div>
         <div class="col-6 border p-2">
+          <input type="button" class="btn btn-primary" value="Prev" id="buttonPrevious" onclick="clickPrevious()">
+          <input type="button" class="btn btn-primary float-end" value="Next" id="buttonNext" onclick="clickNext()">  
           <label id="hint"></label>
         </div>
       </div>
     </div>
     
     <script type="module">
-      const DEFAULT_MODE = 'easy2';
+      const DEFAULT_MODE = 'check';
       const TIME_LIMIT = 20;
       const GREAT_LIMIT = 5;
       const GOOD_LIMIT = 10;
@@ -105,6 +107,8 @@
         window.clickSubmit = clickSubmit;
         window.clickStart = clickStart;
         window.clickMenu = clickMenu;
+        window.clickPrevious = clickPrevious;
+        window.clickNext = clickNext;
 
         eleCheckboxCodes.forEach(checkbox => {
           checkbox.addEventListener('change', function(){
@@ -173,6 +177,8 @@
           const eleSelect = document.getElementById("select-container");
           const eleHint = document.getElementById('hint');
           const eleMenu = document.getElementById('buttonMenu');
+          const eleNext = document.getElementById('buttonNext');
+          const elePrevious = document.getElementById('buttonPrevious');
 
           svg.drawMapFullMainContainer();
 
@@ -190,6 +196,8 @@
           eleStart.style.display = "inline-block";
           eleSelect.style.display = "block";
           eleMenu.classList.add('d-none');
+          eleNext.classList.add('d-none');
+          elePrevious.classList.add('d-none');
 
         }else if(gameStatus === 'mainInit'){
           const eleEntryAnswer = document.getElementById('entryAnswer');
@@ -197,11 +205,16 @@
           const eleSub = document.getElementById('sub-container');
           const eleSelect = document.getElementById("select-container");
           const eleMenu = document.getElementById('buttonMenu');
- 
+          const eleGameStatus = document.getElementById("gameStatus");
+          const eleCode = document.getElementById("questionCode");
+          const eleStart = document.getElementById("buttonStart");
+          const eleHint = document.getElementById('hint');
+
           m_clickCount = 0;
           m_gameScore = 0;
           m_gameStartTime = Date.now();
           m_answerStartTime = Date.now();
+          question.setData(m_jsonData,getSelectedMode(),getSelectedTargetCodes());
 
           eleSubmit.value = 'SUBMIT';
           eleEntryAnswer.value = '';
@@ -209,12 +222,10 @@
           eleSub.classList.remove('d-none');
           eleMenu.classList.remove('d-none');
 
-          question.setData(m_jsonData,getSelectedMode(),getSelectedTargetCodes());
-
-          document.getElementById("gameStatus").textContent =  '...';
-          document.getElementById("questionCode").innerText = question.code[m_clickCount];
-          document.getElementById("buttonSubmit").style.display = "inline-block";
-          document.getElementById("buttonStart").style.display = "none";
+          eleGameStatus.textContent =  '...';
+          eleCode.innerText = question.code[m_clickCount];
+          eleSubmit.style.display = "inline-block";
+          eleStart.style.display = "none";
           eleSelect.style.display = "none";
 
           svg.setObserverGame();
@@ -222,7 +233,6 @@
           m_clickCount += 1;
 
           if(getSelectedMode() === 'easy1' || getSelectedMode() === 'easy2'){
-            const eleHint = document.getElementById('hint');
             for (let index in question.answer) {
               if(question.kana[index].length > 0){
                 eleHint.textContent += question.answer[index] + "(" + question.kana[index] +")/";
@@ -242,12 +252,27 @@
 
             if(TIME_LIMIT < elapsedTime){
               checkEntry();
+              eleResultLabel.textContent += question.answer[m_clickCount-1];
               setNextQuestion();
+
             }else{
               eleResultLabel.style.opacity -= 0.05;
               updateProgress(elapsedTime);
             }   
           },100);
+        }else if(gameStatus === 'mainCheck'){
+          console.log('call main check');
+
+          const eleNext = document.getElementById('buttonNext');
+          const elePrevious = document.getElementById('buttonPrevious');
+          const eleAnswer = document.getElementById('entryAnswer');
+          const eleSubmit = document.getElementById('buttonSubmit');
+
+          eleNext.classList.remove('d-none');
+          elePrevious.classList.remove('d-none');
+          eleSubmit.style.display = "none";
+
+          eleAnswer.value = question.answer[m_clickCount-1];
         }
       }
       function getSelectedMode(){
@@ -277,7 +302,32 @@
           alert("Please select a number.");
         }else{
           setStatus('mainInit');
-          setStatus('main');
+          if(getSelectedMode() === 'check'){
+            setStatus('mainCheck');
+          }else{
+            setStatus('main');
+          }
+        }
+      }
+
+      function drawQuestionData(){
+        const eleAnswer = document.getElementById('entryAnswer');
+        const eleCode = document.getElementById('questionCode');
+        eleAnswer.value = question.answer[m_clickCount-1];
+        eleCode.textContent = question.code[m_clickCount-1];
+        svg.draw(question.pos[m_clickCount-1][0],question.pos[m_clickCount-1][1]);
+      }
+      function clickPrevious(){
+        if(m_clickCount >= 2){
+          m_clickCount -= 1;
+          drawQuestionData();
+        }
+      }
+
+      function clickNext(){
+        if(m_clickCount < question.code.length){
+          m_clickCount += 1;
+          drawQuestionData();
         }
       }
 
@@ -395,14 +445,12 @@
       }
 
       function clickMenu(){
+        const eleSub = document.getElementById('sub-container');
+
         svg.draw(9999,9999);  //マークを非表示（キャンバス外に描画）
         svg.disconnect();
-
-        const eleSub = document.getElementById('sub-container');
         eleSub.classList.add('d-none');
-
         setStatus('select');
-
       }
 
     </script>
