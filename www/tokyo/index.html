@@ -2,7 +2,6 @@
 <html data-bs-theme="dark">
   <head>
     <meta charset="utf-8" />
-    <meta name="Cache-Control" content="no-store" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <title>loopeeTokyo</title>
     <!-- Bootstrap CSS -->
@@ -16,10 +15,10 @@
       <h1 class="text-center mt-2" id="gameStatus">gameStatus</h1>
       <div class="input-group">
         <span class="input-group-text" id="questionCode" style="width:15%;">XX</span>
-        <input id="entryAnswer" type="text" class="form-control" aria-describedby="questionCode" placeholder="Enter the answer" autocomplete="off">
-        <input type="button" class="btn btn-primary" value="START" id="buttonStart" onclick="clickStart()">
-        <input type="button" class="btn btn-primary" value="SUBMIT" id="buttonSubmit" onclick="clickSubmit()">
-        <input type="button" class="btn btn-secondary" value="MENU" id="buttonMenu" onclick="clickMenu()">
+        <input id="entryAnswer" type="text" class="form-control" placeholder="Enter the answer" autocomplete="off">
+        <input type="button" class="btn btn-primary" value="START" id="buttonStart">
+        <input type="button" class="btn btn-primary" value="SUBMIT" id="buttonSubmit">
+        <input type="button" class="btn btn-secondary" value="MENU" id="buttonMenu">
       </div>  
     </div>
     <div class="position-relative d-inline-block w-100">
@@ -68,8 +67,8 @@
           <div class="container d-flex align-items-start justify-content-center p-2" id="sub-container"></div>
         </div>
         <div id='right-container' class="col-6 p-2">
-          <input type="button" class="btn btn-primary" value="Prev" id="buttonPrevious" onclick="clickPrevious()">
-          <input type="button" class="btn btn-primary float-end" value="Next" id="buttonNext" onclick="clickNext()">  
+          <input type="button" class="btn btn-primary" value="Prev" id="buttonPrevious">
+          <input type="button" class="btn btn-primary float-end" value="Next" id="buttonNext">  
           <label id="hint"></label>
         </div>
       </div>
@@ -102,13 +101,8 @@
         const REQUEST_URL = './contents.json';
         const eleCheckboxCodes = document.querySelectorAll('input[name="selectCode"]');
         const eleRadios = document.querySelectorAll('input[name="btnradio"]');
+        const buttons = ['buttonStart', 'buttonSubmit', 'buttonMenu', 'buttonPrevious' , 'buttonNext'];
         let request = new XMLHttpRequest(); 
-
-        window.clickSubmit = clickSubmit;
-        window.clickStart = clickStart;
-        window.clickMenu = clickMenu;
-        window.clickPrevious = clickPrevious;
-        window.clickNext = clickNext;
 
         eleCheckboxCodes.forEach(checkbox => {
           checkbox.addEventListener('change', function(){
@@ -116,17 +110,21 @@
           });
         });
 
+        window.buttonSubmit = clickSubmit;
+        window.buttonStart = clickStart;
+        window.buttonMenu = clickMenu;
+        window.buttonPrevious = clickPrevious;
+        window.buttonNext = clickNext;
+
+        buttons.forEach(id => {
+          document.getElementById(id).addEventListener('click', window[id]);
+        });
+
         eleRadios.forEach(radio => {
           if(DEFAULT_MODE === radio.dataset.index){
             radio.checked = true;
           }
         }); 
-
-        // document.addEventListener("keydown", function(event) {
-        //   if (event.key === "Enter"){
-        //     clickSubmit();
-        //   }
-        // });
 
         request.open('GET', REQUEST_URL);
         request.responseType = 'json';
@@ -419,11 +417,11 @@
         let eleEntryAnswer = document.getElementById('entryAnswer');
         let eleResultLabel = document.getElementById('resultLabel');
 
-        resetResultLabel();
         if(question.answer[m_clickCount-1] === eleEntryAnswer.value){
           let elapsedTime = (Date.now() - m_answerStartTime) / 1000;
           let plusScore = 0;
 
+          resetResultLabel();
           if(GREAT_LIMIT >= elapsedTime){
             eleResultLabel.textContent = 'GREAT';
             eleResultLabel.classList.add('alert-primary');
@@ -441,11 +439,12 @@
 
         }else{
           if(isTimeOver){
+            resetResultLabel();
             eleResultLabel.classList.add('alert-danger');
             eleResultLabel.textContent = 'NG:' + eleEntryAnswer.value;
             eleEntryAnswer.value = '';
-            return false;
           }
+          return false;
         }
       }
       function clickSubmit(){
