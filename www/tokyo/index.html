@@ -338,7 +338,11 @@
       function drawQuestionData(){
         const eleAnswer = document.getElementById('entryAnswer');
         const eleCode = document.getElementById('questionCode');
-        eleAnswer.value = question.answer[m_clickCount-1];
+        if(question.kana[m_clickCount-1] == ""){
+          eleAnswer.value = question.answer[m_clickCount-1];
+        }else{
+          eleAnswer.value = question.answer[m_clickCount-1] + '(' + question.kana[m_clickCount-1] + ')';
+        }
         eleCode.textContent = question.code[m_clickCount-1];
         svg.draw(question.pos[m_clickCount-1][0],question.pos[m_clickCount-1][1]);
       }
