@@ -12,7 +12,7 @@
   {"code":"h-katsushika-03","name":"柏市",    "pos":[111,135],"group":"2","kana":""},
   {"code":"h-katsushika-04","name":"流山市",  "pos":[79,117],"group":"2","kana":""},
   {"code":"h-katsushika-05","name":"我孫子市","pos":[137,121],"group":"2","kana":""},
-  {"code":"h-katsushika-06","name":"鎌ヶ谷市,鎌ケ谷市","pos":[111,164],"group":"2","kana":""},
+  {"code":"h-katsushika-06","name":"鎌ヶ谷市","pos":[111,164],"group":"2","kana":""},
 
   {"code":"inba-01","name":"成田市",   "pos":[240,145],"group":"3","kana":""},
   {"code":"inba-02","name":"佐倉市",   "pos":[192,185],"group":"3","kana":""},
@@ -58,5 +58,5 @@
   {"code":"kimitsu-01","name":"木更津市",  "pos":[90,340], "group":"7","kana":""},
   {"code":"kimitsu-02","name":"君津市",    "pos":[126,390],"group":"7","kana":""},
   {"code":"kimitsu-03","name":"富津市",    "pos":[81,418],"group":"7","kana":""},
-  {"code":"kimitsu-04","name":"袖ケ浦市,袖ヶ浦市",  "pos":[112,316],"group":"7","kana":""}
+  {"code":"kimitsu-04","name":"袖ヶ浦市",  "pos":[112,316],"group":"7","kana":""}
 ]
