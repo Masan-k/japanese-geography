@@ -21,5 +21,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./www/  # 転送するローカルディレクトリ (リポジトリのルート)
-          server-dir: /ftptest/  # サーバー上のディレクトリ
+          server-dir: /  # サーバー上のディレクトリ
 
